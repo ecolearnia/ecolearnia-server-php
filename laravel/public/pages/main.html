@@ -1,0 +1,48 @@
+<!doctype html>
+<html ng-app="mainApp">
+  <head>
+    <!-- material design lite -->
+    <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.5/material.indigo-pink.min.css">
+    <script src="https://storage.googleapis.com/code.getmdl.io/1.0.5/material.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+    <!-- Angular -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-route.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-resource.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-cookies.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-animate.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-aria.js"></script>
+
+    <!-- Angular Material Javascript now available via Google CDN  -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/0.11.4/angular-material.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.11.4/angular-material.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
+
+    <!-- Custom JS -->
+    <script src="js/ecofy-core-auth.js"></script>
+    <script src="js/ecofy-core-reference.js"></script>
+    <script src="js/ecofy-account.js"></script>
+    <script src="js/main-app.js"></script>
+    <script src="js/main-controllers.js"></script>
+
+    <link rel="stylesheet" href="css/main.css">
+  </head>
+  <body class="ng-cloack" ng-controller="FrameController as frameCtrl" >
+
+    <md-toolbar class="md-primary">
+    <div class="md-toolbar-tools">
+      <h2 class="md-flex">Ecofy Identity</h2>
+      <span flex></span>
+      <md-icon md-svg-src="img/icons/ic_person_black_24px.svg"></md-icon>
+    </div>
+    </md-toolbar>
+
+    <div ng-view></div>
+
+    <script type="text/javascript">
+    </script>
+  </body>
+</html>

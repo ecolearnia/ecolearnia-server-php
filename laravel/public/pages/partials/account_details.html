@@ -1,0 +1,56 @@
+<div >
+    <md-toolbar class="md-primary md-hue-2">
+      <div class="md-toolbar-tools">
+        <h2 class="md-flex"><a href="#/">Accounts</a></h2>  <span style="margin: 1em">></span>
+        <span ng-bind="accountCtrl.account.displayName" />
+      </div>
+    </md-toolbar>
+
+    <md-content class="md-padding" layout="row" layout-align="center center" ng-cloak>
+        <dl>
+            <dt>Display Name</dt>
+            <dd>{{accountCtrl.account.displayName}}</dd>
+        </dl>
+        <dl>
+            <dt>Email</dt>
+            <dd><span ng-bind="accountCtrl.account.primaryEmail" /></dd>
+        </dl>
+        <dl>
+            <dt>status</dt>
+            <dd><span ng-bind="accountCtrl.account.status" /></dd>
+        </dl>
+        <dl>
+            <dt>lastLogin</dt>
+            <dd><span ng-bind="accountCtrl.account.lastLogin" /></dd>
+        </dl>
+        <dl>
+            <dt>profile.dob</dt>
+            <dd><span ng-bind="accountCtrl.account.profile.dob" /></dd>
+        </dl>
+        <dl>
+            <dt>profile.gender</dt>
+            <dd><span ng-bind="accountCtrl.account.profile.gender" /></dd>
+        </dl>
+        <dl>
+            <dt>profile.timezone</dt>
+            <dd><span ng-bind="accountCtrl.account.profile.timezone" /></dd>
+        </dl>
+        <dl>
+            <dt>profile.address_countryCode</dt>
+            <dd><span ng-bind="accountCtrl.account.profile.address_countryCode" /></dd>
+        </dl>
+        <dl>
+            <dt>profile.address_stateCode</dt>
+            <dd><span ng-bind="accountCtrl.account.profile.address_stateCode" /></dd>
+        </dl>
+    </md-content>
+
+</div>
+<hr/>
+
+Authentication methods
+<ul>
+    <li ng-repeat="auth in accountCtrl.account.auths">
+        {{ auth.authSource }} ({{ auth.createdAt }})
+    </li>
+</ul>

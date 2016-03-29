@@ -1,0 +1,60 @@
+<div >
+    <md-toolbar class="md-primary md-hue-2">
+      <div class="md-toolbar-tools">
+        <h2 class="md-flex"><a href="#/">Accounts</a></h2>
+        <span style="margin: 1em">></span> <span ng-bind="relationsCtrl.session.displayName" ></span>
+        <span style="margin: 1em">></span> <span>Relations</span>
+      </div>
+    </md-toolbar>
+
+    <md-content class="md-padding" layout="row" layout-align="center center" ng-cloak>
+      <table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
+        <thead>
+            <tr>
+              <td colspan="9">
+                <span>
+                  Name: <input ng-model="relationsCtrl.queryCriteria.name" />
+                  status: <input ng-model="relationsCtrl.queryCriteria.status" />
+                  role: <input ng-model="relationsCtrl.queryCriteria.role" />
+                </span>
+                <span flex></span>
+                <span><md-button class="md-primary" ng-click="relationsCtrl.doQuery()">Search</md-button></span>
+              </td>
+            </tr>
+            <tr>
+              <th></th>
+              <th class="mdl-data-table__cell--non-numeric">Type</th>
+              <th class="mdl-data-table__cell--non-numeric">Name</th>
+              <th class="mdl-data-table__cell--non-numeric">Role</th>
+              <th>Since</th>
+              <th>Last Interaction</th>
+              <th class="mdl-data-table__cell--non-numeric">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+          <tr class="ng-cloack" ng-repeat="relation in relationsCtrl.relations">
+              <td><img ng-show="relation.counterpartAccount.imageUrl != undefined" src={{relation.counterpartAccount.imageUrl}} width="50px" /></td>
+              <td>{{relation.relationship}}</td>
+              <td><a href="#/account/{{relation.counterpartAccount.uuid}}" ><span ng-bind="relation.counterpartAccount.displayName" /></a></td>
+              <td>{{relation.counterpartRole}}</td>
+              <td>{{relation.createdAt | date:'shortDate'}}</td>
+              <td>{{relation.lastInteraction | date:'shortDate'}}</td>
+              <td>
+                <a ng-click="relationsCtrl.removeRelation(relation)" >Delete</a>
+              </td>
+          </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="8" style="text-align: center">
+            <span  ng-repeat="n in [].constructor(relationsCtrl.queryResult.numPages) track by $index">
+              <a ng-click="relationsCtrl.goToPage($index)" class="md-raised md-primary">{{$index + 1}}</a>
+            </span>
+          </td>
+        </tr>
+      </tfoot>
+      </table>
+    </md-content>
+
+</div>
+<hr/>

@@ -1,0 +1,95 @@
+<!doctype html>
+<html ng-app="mainApp">
+  <head>
+    <!-- material design lite -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic">
+
+    <!-- Angular -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular-route.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular-resource.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular-cookies.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular-animate.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular-aria.js"></script>
+
+    <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+    <!-- Foundation UI framework -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/foundation/6.1.2/foundation.min.css">
+    <script src="https://cdn.jsdelivr.net/foundation/6.1.2/js/foundation.core.js"></script>
+    <script src="https://cdn.jsdelivr.net/foundation/6.1.2/foundation.min.js"></script>
+
+    <!--
+    <script src="https://cdn.jsdelivr.net/foundation/6.1.2/js/foundation.util.mediaQuery.js"></script>
+    <script src="https://cdn.jsdelivr.net/foundation/6.1.2/js/foundation.util.motion.js"></script>
+    <script src="https://cdn.jsdelivr.net/foundation/6.1.2/js/foundation.util.box.js"></script>
+    <script src="https://cdn.jsdelivr.net/foundation/6.1.2/js/foundation.util.keyboard.js"></script>
+    <script src="https://cdn.jsdelivr.net/foundation/6.1.2/js/foundation.util.triggers.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/foundation/6.1.2/js/foundation.dropdown.js"></script>
+    <script src="https://cdn.jsdelivr.net/foundation/6.1.2/js/foundation.dropdownMenu.js"></script>
+-->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
+
+    <!-- Custom JS -->
+    <script src="../shared/js/ecofy-core-auth.js"></script>
+    <script src="../shared/js/ecofy-core-reference.js"></script>
+    <script src="../shared/js/ecofy-account.js"></script>
+    <script src="js/main-app.js"></script>
+    <script src="js/main-controllers.js"></script>
+
+    <link rel="stylesheet" href="css/main.css">
+  </head>
+  <body class="ng-cloack" ng-controller="FrameController as frameCtrl" >
+
+    <div class="top-bar">
+    <div class="top-bar-left">
+      <ul class="dropdown menu" data-dropdown-menu>
+        <li class="menu-text">EcoLearnia</li>
+        <li><a href="#">About</a></li>
+      </ul>
+    </div>
+    <div class="top-bar-right">
+        <!-- @todo: Add session -->
+      <span ng-bind="frameCtrl.session.displayName" ></span>
+
+
+      <img class="badge" src="{{frameCtrl.session.imageUrl}}"  width="40px" height="40px" data-toggle="menu-account"></img>
+
+      <div class="dropdown-pane bottom right" id="menu-account" data-dropdown >
+          <ul class="vertical dropdown menu" data-dropdown-menu>
+              <li><a href="#">Profile</a></li>
+              <li><a href="#">My Network</a></li>
+              <li><a href="#">Signout</a></li>
+            </ul>
+        </div>
+    </div>
+  </div>
+
+  <!-- Secondar top bar (custom )-->
+  <div class="top-bar top-bar_secondary">
+      <div class="top-bar-left">
+        <ul class="menu" data-menu>
+          <li><a href="#"><img src="assets/icons/home-32.png" border="0" style="padding-right: 3px" />Home</a></li>
+          <li><a href="#"><img src="assets/icons/map-32.png" border="0" style="padding-right: 3px" />My World</a></li>
+          <li><a href="#"><img src="assets/icons/rocket-48.png" border="0" style="padding-right: 3px" height="32" />Mission</a></li>
+          <li><a href="#"><img src="assets/icons/analytics-48.png" border="0" style="padding-right: 3px" height="32" />Progress</a></li>
+        </ul>
+      </div>
+    </div>
+
+
+
+<p>a</p><p>a</p><p>a</p>
+
+
+
+
+    <div ng-view></div>
+
+    <script type="text/javascript">
+        $(document).foundation();
+    </script>
+  </body>
+</html>

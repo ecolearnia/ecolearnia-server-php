@@ -10,3 +10,8 @@ composer require symfony/expression-language
 composer require laravel/socialite
 
 Update config/services.php by adding config for googleplus, linkedin, facebook
+
+
+# Http
+## Middleware
+'ecofyauth' => \App\Http\Middleware\EcofyAuthenticate::class,

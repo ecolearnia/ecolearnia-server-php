@@ -156,6 +156,15 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        /*
+         * Ecofy
+         */
+        App\Ecofy\Modules\Auth\AuthServiceProvider::class,
+        App\Ecofy\Modules\Account\AccountServiceProvider::class,
+
+        // Social Network's Auth
+        Laravel\Socialite\SocialiteServiceProvider::class,
+
     ],
 
     /*
@@ -202,6 +211,8 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
+        // Ecofy Auth
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
     ],
 
 ];

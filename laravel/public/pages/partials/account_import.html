@@ -1,0 +1,28 @@
+<div >
+
+  <md-toolbar class="md-primary md-hue-2">
+    <div class="md-toolbar-tools">
+      <h2 class="md-flex"><a href="#/">Import</a></h2>  <span style="margin: 1em">></span>
+    </div>
+  </md-toolbar>
+
+  <md-content class="md-padding" layout="row" layout-align="center center" ng-cloak>
+    <form name="importForm" ng-submit="importCtrl.submit()">
+
+      <md-input-container flex>
+        <label>Data (CSV)</label>
+        <textarea ng-model="importCtrl.dataToImport" cols="80" rows="8">primaryEmail,profile.givenName
+test@gmc.com,Hello</textarea>
+      </md-input-container>
+
+      <md-button class="md-raised" ng-click="importCtrl.process('validate')">Validate</md-button>
+
+      <div ng-if="!importCtrl.validated">
+
+      </div>
+      <md-button class="md-raised" ng-if="!importCtrl.validated.records"
+        ng-click="importCtrl.process('import')">Import</md-button>
+    </form>
+  </md-content>
+
+</div>

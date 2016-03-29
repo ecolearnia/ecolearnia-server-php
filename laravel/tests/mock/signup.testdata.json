@@ -1,0 +1,15 @@
+{
+	"profile": {
+		"givenName": "YOung",
+		"familyName": "Ahn",
+		"gender": "2",
+		"emails": ["test@tset.com"],
+		"dob": "1927-04-02T04:00:00.000Z"
+	},
+	"auth": {
+		"security": {
+			"password": "tt"
+		},
+		"username": "test@tset.com"
+	}
+}
