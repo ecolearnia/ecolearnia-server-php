@@ -101,9 +101,9 @@ class RelationApiController extends AbstractResourceController
 	 * @param  mixed  $id
 	 * @return Response
 	 */
-	public function update($containerUuid, $id)
+	public function update(Request $request, $containerUuid, $id)
 	{
-		$data = \Input::all();
+		$data = $request->all();
 
         $updateMethod = 'update';
 

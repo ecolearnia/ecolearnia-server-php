@@ -80,9 +80,9 @@ class AuthenticationApiController extends Controller
     /**
      * Signs in a user with local authentication
      */
-    public function signin(AuthServiceContract $authService)
+    public function signin(Request $request, AuthServiceContract $authService)
     {
-        $payload = \Input::json();
+        $payload = $request->json();
 
         $authCredentials = new Auth();
         $authCredentials->authSource = 'local';

@@ -1,0 +1,14 @@
+WIP: Relation
+- N:M Account-to-accont relation (e.g parent, teacher, mentor, etc.)
+- Account Dashboard page: security, personal info, preferences
+- Role & Permission management UI
+- Lookup service (geography: country, province)
+- DB seeding with host root
+- CSFR
+
+- Simple Content module
+    - Model, Service
+    - REST API Controller
+- Sequence module
+    - Model & Service
+    - REST API Controller

@@ -25,7 +25,7 @@ class RelationService extends AbstractResourceService
     protected $accountService = null;
 
     public function __construct() {
-		parent::__construct('\\App\\Modules\\Relation\\Relation',['account1', 'account2']);
+		parent::__construct('\\App\\Ecofy\\Modules\\Relation\\Relation',['account1', 'account2']);
 	}
 
     public function name()

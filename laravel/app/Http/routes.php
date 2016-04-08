@@ -29,9 +29,9 @@ Route::get('auth/facebook/callback', '\App\Ecofy\Modules\Auth\Controllers\AuthFa
 Route::get('auth/linkedin', '\App\Ecofy\Modules\Auth\Controllers\AuthLinkedInController@redirectToProvider');
 Route::get('auth/linkedin/callback', '\App\Ecofy\Modules\Auth\Controllers\AuthLinkedInController@handleProviderCallback');
 
-Route::post('api/signup', '\App\Ecofy\Modules\Auth\Controllers\AuthApiController@signup');
-Route::post('api/signin', '\App\Ecofy\Modules\Auth\Controllers\AuthApiController@signin');
-Route::post('api/signout', '\App\Ecofy\Modules\Auth\Controllers\AuthApiController@signout');
+Route::post('api/signup', '\App\Ecofy\Modules\Auth\Controllers\AuthenticationApiController@signup');
+Route::post('api/signin', '\App\Ecofy\Modules\Auth\Controllers\AuthenticationApiController@signin');
+Route::post('api/signout', '\App\Ecofy\Modules\Auth\Controllers\AuthenticationApiController@signout');
 
 // Ecofy: Protected routes
 Route::group(['middleware' => 'ecofyauth'], function () {

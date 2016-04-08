@@ -3,7 +3,6 @@ namespace App\Ecofy\Support;
 
 use DB;
 use Log;
-use Input;
 use Illuminate\Http\Request;
 
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -66,9 +65,9 @@ abstract class AbstractResourceApiController extends AbstractResourceController
 	 *
 	 * @return Response
 	 */
-	public function store()
+	public function store(Request $request)
 	{
-		$data = \Input::all();
+		$data = $request->all();
 
 		$createMethod = 'add';
 
@@ -118,9 +117,9 @@ abstract class AbstractResourceApiController extends AbstractResourceController
 	 * @param  mixed  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function update(Request $request, $id)
 	{
-		$data = Input::all();
+		$data = $request->all();
 
         $updateMethod = 'update';
 
