@@ -41,5 +41,8 @@ Route::group(['middleware' => 'ecofyauth'], function () {
 
     //Route::post('api/import', 'ImportApiController@process');
 });
+
 // @todo include as part of protected API
 Route::resource('api/accounts.relations', '\App\Ecofy\Modules\Relation\Controllers\RelationApiController');
+
+Route::resource('api/contents', '\App\EcoLearnia\Modules\Content\Controllers\ContentApiController');

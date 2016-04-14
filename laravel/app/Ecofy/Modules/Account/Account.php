@@ -22,7 +22,7 @@ class Account extends ModelBase implements \Illuminate\Contracts\Auth\Authentica
     , 'kind' , 'lastLogin'];
 
     /**
-     * Get the phone record associated with the user.
+     * Get the profile record associated with the user.
      */
     public function profile()
     {
@@ -31,7 +31,7 @@ class Account extends ModelBase implements \Illuminate\Contracts\Auth\Authentica
 
 
     /**
-     * Get the phone record associated with the user.
+     * Get the auths record associated with the user.
      */
     public function auths()
     {

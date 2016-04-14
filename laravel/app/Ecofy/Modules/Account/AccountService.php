@@ -76,6 +76,7 @@ class AccountService extends AbstractResourceService
 
 
     /**
+     * @overrides  AbstractResourceService::createNewModel()
      * Creates a new model initializing the createdAt property
      */
     public function createNewModel($data = null, $modelFqn = null)

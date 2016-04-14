@@ -34,4 +34,5 @@ class Profile extends ModelBase
     {
         return $this->belongsTo('App\Ecofy\Modules\Account\Account');
     }
+
 }

@@ -120,6 +120,9 @@ abstract class AbstractResourceService
     // Resource Access Operations {{
     /**
      * Add
+     * The method calls $this->createNewModel() and saves it.
+     * The derived class can either override the createNewModel()
+     * to modify the behavior of serializing array data into the model.
      *
      * @param Object  $resource - The resource (record) to add
      * @param Object  $options  - Any options for add operation
@@ -136,13 +139,7 @@ abstract class AbstractResourceService
         } else {
             throw new Exception('Unsupported argument type passed');
         }
-        /* no longer necessary, createModel() generates the uuid
-        // Assign a new UUID
-        $primaryKeyName = $this->primaryKeyName;
-        if (empty($model->$primaryKeyName)) {
-            $model->$primaryKeyName = $this->genUuid();
-        }
-        */
+
         $model->save();
         return $model;
     }
