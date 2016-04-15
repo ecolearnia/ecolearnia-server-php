@@ -39,6 +39,7 @@ abstract class ModelBase extends Model
         $value = parent::getAttributeValue($key);
         // If the attribute is listed as a jsons, we will convert it to array.
         if (in_array($key, $this->jsons) && ! is_null($value)) {
+            die($value);
             return json_decode($value);
         }
         return $value;
@@ -54,15 +55,34 @@ abstract class ModelBase extends Model
     */
    public function setAttribute($key, $value)
    {
-       parent::getAttributeValue($key, $value);
-       // If an attribute is listed as a "date", we'll convert it from a DateTime
-       // instance into a form proper for storage on the database tables using
-       // the connection grammar's date format. We will auto set the values.
+       parent::setAttribute($key, $value);
+       // If an attribute is listed as a "jsons", we'll convert it from a
+       // string to json.
        if ($value && (in_array($key, $this->jsons))) {
            $value = json_encode($value);
+           $this->attributes[$key] = $value;
        }
-       $this->attributes[$key] = $value;
+
        return $this;
+   }
+
+   /**
+    * @overrides
+    * Convert the model's attributes to an array.
+    *
+    * @return array
+    */
+   public function attributesToArray()
+   {
+       $attributes = parent::attributesToArray();
+       foreach ($this->jsons as $key) {
+           if (! isset($attributes[$key])) {
+               continue;
+           }
+
+           $attributes[$key] = json_decode($attributes[$key]);
+       }
+       return $attributes;
    }
 
     /**

@@ -26,15 +26,15 @@ class CreateActivitiesTable extends Migration
             $table->uuid('assignmentUuid')->index(); // The starting point in the content graph
             $table->uuid('contentUuid'); // The content
 
-            $table->float('correctness');
-            $table->float('score'); // Local score
+            $table->float('correctness')->default(0);
+            $table->float('score')->default(0); // Local score
 
             // @todo - Use json whenever possible
             $table->longText('contentInstance'); // Variables defined
 
-            $table->longText('state'); // evaluations
-            $table->longText('timestamps'); // timestamps
-            $table->longText('evalDetails'); // evalDetails: array or Evals
+            $table->longText('state')->nullable(); // evaluations
+            $table->longText('timestamps')->nullable(); // timestamps
+            $table->longText('evalDetails')->nullable(); // evalDetails: array or Evals
 
             $table->foreign('assignmentUuid')->references('uuid')->on('assignments');
             $table->foreign('contentUuid')->references('uuid')->on('contents');

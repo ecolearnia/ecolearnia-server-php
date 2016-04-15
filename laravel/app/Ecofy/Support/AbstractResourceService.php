@@ -133,12 +133,14 @@ abstract class AbstractResourceService
         $model = null;
         if (is_array($resource)) {
             // Create model off of array
-            $model = $this->createNewModel($resoure);
+            $model = $this->createNewModel($resource);
         } else if ($resource instanceof Model) {
             $model = $resource;
         } else {
             throw new Exception('Unsupported argument type passed');
         }
+        //print_r($model);
+        //die();
 
         $model->save();
         return $model;

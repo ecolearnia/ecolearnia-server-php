@@ -24,28 +24,28 @@ class CreateContentsTable extends Migration
             $table->integer('modifiedCounter')->default(0);
 
             $table->uuid('realmUuid')->index();
-            $table->uuid('parentUuid')->index();
-            $table->uuid('copiedFromUuid')->index();
+            $table->uuid('parentUuid')->nullable()->index();
+            $table->uuid('copiedFromUuid')->nullable()->index();
 
-            $table->string('version', 64);
+            $table->string('version', 64)->nullable();
             $table->string('type', 12)->index(); // node - internal node, item - content item
 
             $table->string('meta_subject', 64)->index(); // Eg. Math
             $table->string('meta_subjectArea', 64)->index(); // Eg. Arithmeti
-            $table->string('meta_domainCodeSource', 32)->index(); // Eg. CommonCore
-            $table->string('meta_domainCode', 64)->index(); // "CCSS.MATH.CONTENT.1.NBT.B.2.A"
-            $table->string('meta_authors');
+            $table->string('meta_domainCodeSource', 32)->nullable()->index(); // Eg. CommonCore
+            $table->string('meta_domainCode', 64)->nullable()->index(); // "CCSS.MATH.CONTENT.1.NBT.B.2.A"
+            $table->string('meta_authors')->nullable();
             $table->string('meta_locale', 12)->index(); // EN_us
             $table->string('meta_title'); //
-            $table->integer('meta_expectedDuration'); // average duration in minutes
-            $table->tinyInteger('meta_difficulty'); // Difficulty value range [0, 100]
+            $table->integer('meta_expectedDuration')->nullable(); // average duration in minutes
+            $table->tinyInteger('meta_difficulty')->nullable(); // Difficulty value range [0, 100]
             $table->string('meta_license')->default('cc-by-nc-sa/4.0'); // Creative Commons: http://creativecommons.org/licenses/by-nc-sa/4.0/
             // @todo - add: pre requisites
 
             //$table->json('content'); // Either array of children or the ContentdDefinition
             // JSON not supported in my local PHP installation, probably similar
             // So using longText instead
-            $table->longText('content'); 
+            $table->longText('content');
         });
     }
 

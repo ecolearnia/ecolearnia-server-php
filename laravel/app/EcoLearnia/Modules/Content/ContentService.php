@@ -25,7 +25,7 @@ class ContentService extends AbstractResourceService
     protected $accountService = null;
 
     public function __construct() {
-		parent::__construct('\\App\\EcoLearnia\\Modules\\Content\\Content',['account1', 'account2']);
+		parent::__construct('\\App\\EcoLearnia\\Modules\\Content\\Content',['parent', 'children']);
 	}
 
     public function name()
@@ -67,7 +67,9 @@ class ContentService extends AbstractResourceService
     {
         $model = parent::add($resource, $options);
 
-        $this->addChildTo($model->parentUuid, $model);
+        if (!empty($model->parentUuid)) {
+            $this->addChildTo($model->parentUuid, $model);
+        }
 
         return $model;
     }

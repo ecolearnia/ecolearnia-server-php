@@ -23,23 +23,23 @@ class CreateAssignmentsTable extends Migration
             $table->timestamp('modifiedAt')->nullable();
             $table->integer('modifiedCounter')->default(0);
 
-            $table->timestamp('lastInteraction');
+            $table->timestamp('lastInteraction')->nullable();
 
             $table->uuid('outsetCNodeUuid')->index(); // The starting point in the content graph
-            $table->uuid('lastCNodeUuid'); // The last content that was delivered to the student
-            $table->uuid('activityHeadUuid');
-            $table->uuid('activityTailUuid'); // The last activity that was instantiated
-            $table->uuid('activeActivityUuid'); // The last activity that was touched, it is usually the last activity but not necessarly always
+            $table->uuid('lastCNodeUuid')->nullable(); // The last content that was delivered to the student
+            $table->uuid('activityHeadUuid')->nullable(); // The first activity
+            $table->uuid('activityTailUuid')->nullable(); // The last activity that was instantiated
+            $table->uuid('activeActivityUuid')->nullable(); // The last activity that was touched, it is usually the last activity but not necessarly always
 
-            $table->integer('stats_activitiesCount');
-            $table->integer('stats_timeSpent');
-            $table->integer('stats_corrects');
-            $table->integer('stats_incorrects');
-            $table->integer('stats_partialcorrects');
-            $table->float('stats_score'); // Local score
+            $table->integer('stats_activitiesCount')->default(0);
+            $table->integer('stats_timeSpent')->default(0);
+            $table->integer('stats_corrects')->default(0);
+            $table->integer('stats_incorrects')->default(0);
+            $table->integer('stats_partialcorrects')->default(0);
+            $table->float('stats_score')->default(0); // Local score
 
-            $table->longText('config'); // Policy, etc.
-            $table->longText('state_itemEvalBriefs'); // evaluations
+            $table->longText('config')->nullable(); // Policy, etc.
+            $table->longText('state_itemEvalBriefs')->nullable(); // evaluations
 
         });
 

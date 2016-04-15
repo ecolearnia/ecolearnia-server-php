@@ -46,3 +46,6 @@ Route::group(['middleware' => 'ecofyauth'], function () {
 Route::resource('api/accounts.relations', '\App\Ecofy\Modules\Relation\Controllers\RelationApiController');
 
 Route::resource('api/contents', '\App\EcoLearnia\Modules\Content\Controllers\ContentApiController');
+
+
+Route::get('home', 'HomeController@showHome');
