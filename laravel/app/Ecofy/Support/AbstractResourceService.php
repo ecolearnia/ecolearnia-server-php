@@ -214,7 +214,7 @@ abstract class AbstractResourceService
     public function findByPK($pk, $options = null)
     {
         $criteria = $this->criteriaByPk($pk);
-        $record = $this->find($criteria);
+        $record = $this->find($criteria, $options);
         return $record;
     }
 
@@ -252,6 +252,7 @@ abstract class AbstractResourceService
     public function remove($criteria, $options = null)
     {
         $query = $this->buildQuery($criteria);
+        // removing only the first one!!
         $deletedRows = $query->first()->delete();
         return $deletedRows;
     }

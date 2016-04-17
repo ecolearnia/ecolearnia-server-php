@@ -78,6 +78,10 @@ import _ from 'lodash';
             .then(response => response.json());
      }
 
+     /**
+      * Saves a resource (POST)
+      * @param
+      */
      save(params, data)
      {
          let opts  = this.buildCallOpts({method:'POST', body: data});
@@ -87,6 +91,10 @@ import _ from 'lodash';
             .then(response => response.json());
      }
 
+     /**
+      * Queries resources (GET list)
+      * @param
+      */
      query(params)
      {
          let opts  = this.buildCallOpts();
@@ -95,20 +103,24 @@ import _ from 'lodash';
             .then(response => response.json());
      }
 
-     remove(params)
+     /**
+      * Deletes a resource (DELETE)
+      * @param
+      */
+     delete(params)
      {
-         let opts  = this.buildCallOpts();
-         return fetch(this.baseUrl_, opts)
+         let opts  = this.buildCallOpts({method:'DELETE'});
+         return fetch(this.baseUrl_ + params._id, opts)
             .then(checkStatus)
             .then(response => response.json());
      }
 
-     delete(params)
+     /**
+      * Same as remove
+      */
+     remove(params)
      {
-         let opts  = this.buildCallOpts();
-         return fetch(this.baseUrl_, opts)
-            .then(checkStatus)
-            .then(response => response.json());
+         return this.delete(params);
      }
 
      /**

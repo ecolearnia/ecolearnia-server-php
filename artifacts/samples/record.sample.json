@@ -1,0 +1,33 @@
+    {
+        "realmUuid": "Test",
+        "parentUuid": "589888f4-5bed-4393-bdc0-f9001cde0cd6",
+        "copiedFromUuid": null,
+        "version": "0.9",
+        "type": "node",
+        "meta_subject": "Test Subject",
+        "meta_subjectArea": "Test Subject Area",
+        "meta_domainCodeSource": null,
+        "meta_domainCode": null,
+        "meta_authors": null,
+        "meta_locale": "EN_us",
+        "meta_title": "Test  1.1",
+        "meta_expectedDuration": null,
+        "meta_difficulty": null,
+        "meta_license": "cc-by-nc-sa\/4.0",
+        "content": {
+
+            "body": {
+                "mainComponent": "my_question",
+                "components": {
+                    "actionbar": {
+                        "type": "ActionBar",
+                        "config": {
+                            "items": [
+                                "submit"
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }

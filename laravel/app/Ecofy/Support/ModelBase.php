@@ -39,7 +39,7 @@ abstract class ModelBase extends Model
         $value = parent::getAttributeValue($key);
         // If the attribute is listed as a jsons, we will convert it to array.
         if (in_array($key, $this->jsons) && ! is_null($value)) {
-            die($value);
+            //die($value);
             return json_decode($value);
         }
         return $value;

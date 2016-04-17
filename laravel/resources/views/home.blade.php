@@ -20,6 +20,7 @@
         <br/>
         <button id="btnGet">Get</button>
         <button id="btnSave">Save</button>
+        <button id="btnDelete">Delete</button>
 
 <script type="text/javascript">
     var main = require('main');
@@ -36,6 +37,14 @@
     $("#btnSave").click(function(event) {
         var content = $("#content").val();
         contenResource.save(null, content)
+        .then(function(data){
+            alert(data);
+        });
+    });
+
+    $("#btnDelete").click(function(event) {
+        var id = $("#id").val();
+        contenResource.delete({_id: id})
         .then(function(data){
             alert(data);
         });

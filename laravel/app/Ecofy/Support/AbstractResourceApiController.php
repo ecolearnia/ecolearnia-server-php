@@ -89,9 +89,11 @@ abstract class AbstractResourceApiController extends AbstractResourceController
 	 * @param  mixed  $id
 	 * @return Response
 	 */
-	public function show($id)
+	public function show($id, Request $request)
 	{
-		$resource = $this->service->findByPK($id);
+		$options = $request->all();
+
+		$resource = $this->service->findByPK($id, $options);
 
 		if (!empty($resource)) {
 			return $this->jsonResponse($resource, 200);
