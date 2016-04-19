@@ -37,6 +37,8 @@ class CreateContentsTable extends Migration
             $table->string('meta_authors')->nullable();
             $table->string('meta_locale', 12)->index(); // EN_us
             $table->string('meta_title'); //
+            $table->mediumText('meta_description'); //
+            
             $table->integer('meta_expectedDuration')->nullable(); // average duration in minutes
             $table->tinyInteger('meta_difficulty')->nullable(); // Difficulty value range [0, 100]
             $table->string('meta_license')->default('cc-by-nc-sa/4.0'); // Creative Commons: http://creativecommons.org/licenses/by-nc-sa/4.0/
@@ -46,6 +48,10 @@ class CreateContentsTable extends Migration
             // JSON not supported in my local PHP installation, probably similar
             // So using longText instead
             $table->longText('content');
+
+            // Configurtion e.g. The randomizer, number of activities
+            // JSON: process: {beforeInstantiation}, numActivities,   
+            $table->longText('config')->nullable(); // Policy, etc.
         });
     }
 

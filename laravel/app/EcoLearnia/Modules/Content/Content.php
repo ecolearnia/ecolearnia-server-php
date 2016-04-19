@@ -10,7 +10,7 @@ class Content extends ModelBase
     public $timestamps = false;
     protected $dates = ['createdAt', 'modifiedAt'];
 
-    protected $jsons = ['content'];
+    protected $jsons = ['content', 'config'];
 
     /**
      * The attributes excluded from the model's JSON form.

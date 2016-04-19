@@ -24,7 +24,9 @@ class CreateActivitiesTable extends Migration
             $table->integer('modifiedCounter')->default(0);
 
             $table->uuid('assignmentUuid')->index(); // The starting point in the content graph
-            $table->uuid('contentUuid'); // The content
+            // The sequence number within the assignment, to allow ordered retrieval of activities
+            $table->integer('sequenceNum')->index(); 
+            $table->uuid('contentUuid'); // The content node
 
             $table->float('correctness')->default(0);
             $table->float('score')->default(0); // Local score

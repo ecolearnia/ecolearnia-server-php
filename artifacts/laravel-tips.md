@@ -17,3 +17,6 @@ php artisan migrate
 delete from migrations where migration='2016_04_09_180431_create_activities_table';
 delete from migrations where migration='2016_04_09_132402_create_assignments_table';
 delete from migrations where migration='2016_04_09_124534_create_contents_table';
+drop table activities;
+drop table assignments;
+drop table contents;

@@ -58,7 +58,7 @@ abstract class ModelBase extends Model
        parent::setAttribute($key, $value);
        // If an attribute is listed as a "jsons", we'll convert it from a
        // string to json.
-       if ($value && (in_array($key, $this->jsons))) {
+       if (isset($value) && (in_array($key, $this->jsons))) {
            $value = json_encode($value);
            $this->attributes[$key] = $value;
        }

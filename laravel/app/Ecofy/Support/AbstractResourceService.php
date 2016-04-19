@@ -97,6 +97,7 @@ abstract class AbstractResourceService
 
     /**
      * Creates a new model initializing the createdAt property
+     * And generating a new uuid
      */
     public function createNewModel($data = null, $modelFqn = null)
     {
@@ -234,7 +235,9 @@ abstract class AbstractResourceService
         */
         // @todo - Some cases sanitization should be skipped
         //         E.g. when updating lastLogin
-        $setData = $this->createModel($data)->toArray();
+        //$setData = $this->createModel($data)->toArray();
+        //
+        $setData = $this->createModel($data)->getAttributes();
         $setData['modifiedAt'] = new \DateTime();
 
         $criteria = $this->criteriaByPk($pk);

@@ -1,0 +1,28 @@
+    {
+        "realmUuid": "Test",
+        "parentUuid": null,
+        "copiedFromUuid": null,
+        "version": "0.9",
+        "type": "node",
+        "meta_subject": "Test: Math",
+        "meta_subjectArea": "Test: Arithmetic",
+        "meta_domainCodeSource": null,
+        "meta_domainCode": null,
+        "meta_authors": null,
+        "meta_locale": "EN_us",
+        "meta_title": "Test  1.1",
+        "meta_expectedDuration": null,
+        "meta_difficulty": null,
+        "meta_license": "cc-by-nc-sa\/4.0",
+        "content": {
+            "body": []
+        },
+        "config": {
+            "middleware": {
+                "beforeInstantiation": "VariableRandomizer"
+            },
+            "iteration": {
+                "max": 10
+            }
+        }
+    }

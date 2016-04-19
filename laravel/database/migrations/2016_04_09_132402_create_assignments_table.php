@@ -26,10 +26,11 @@ class CreateAssignmentsTable extends Migration
             $table->timestamp('lastInteraction')->nullable();
 
             $table->uuid('outsetCNodeUuid')->index(); // The starting point in the content graph
-            $table->uuid('lastCNodeUuid')->nullable(); // The last content that was delivered to the student
+            //$table->uuid('lastCNodeUuid')->nullable(); // The last content that was delivered to the student
             $table->uuid('activityHeadUuid')->nullable(); // The first activity
             $table->uuid('activityTailUuid')->nullable(); // The last activity that was instantiated
-            $table->uuid('activeActivityUuid')->nullable(); // The last activity that was touched, it is usually the last activity but not necessarly always
+            $table->uuid('recentActivityUuid')->nullable(); // The last activity that was touched, it is usually the last activity but not necessarly always
+            $table->tinyInteger('status')->default(0)->index(); // 0 => created, 1 => working, 9 => completed
 
             $table->integer('stats_activitiesCount')->default(0);
             $table->integer('stats_timeSpent')->default(0);
@@ -45,9 +46,9 @@ class CreateAssignmentsTable extends Migration
 
         Schema::table('assignments', function ($table) {
             $table->foreign('outsetCNodeUuid')->references('uuid')->on('contents');
-            $table->foreign('lastCNodeUuid')->references('uuid')->on('contents');
+            //$table->foreign('lastCNodeUuid')->references('uuid')->on('contents');
             //$table->foreign('activityTailUuid')->references('uuid')->on('activities');
-            //$table->foreign('activeActivityUuid')->references('uuid')->on('activities');
+            //$table->foreign('recentActivityUuid')->references('uuid')->on('activities');
         });
     }
 

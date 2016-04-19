@@ -1,6 +1,6 @@
 <?php
 
-namespace App\EcoLearnia\Modules\Content;
+namespace App\EcoLearnia\Modules\Assignment;
 
 use DateTime;
 use Log;
@@ -14,88 +14,119 @@ use App\Ecofy\Support\EcoCriteriaBuilder;
 use App\Ecofy\Support\AbstractResourceService;
 
 // Models
-use App\Ecofy\Modules\Account\Account;
+use App\EcoLearnia\Modules\Assignment\Activity;
 
-use App\Ecofy\Modules\Content\ContentServiceContract;
+use App\EcoLearnia\Modules\Content\ContentService;
 
 
-class ContentService extends AbstractResourceService
-    implements ContentServiceContract
+class AssignmentService extends AbstractResourceService
 {
-    protected $accountService = null;
+    protected $activityService = null;
+    protected $contentService = null;
 
     public function __construct() {
-		parent::__construct('\\App\\EcoLearnia\\Modules\\Assignment\\Assignment',['account1', 'account2']);
+		parent::__construct('\\App\\EcoLearnia\\Modules\\Assignment\\Assignment',['outsetCNode', 'recentActivity']);
 	}
 
     public function name()
     {
-        return 'ContentService';
+        return 'AssignmentService';
     }
 
-    public function getAccountService()
+    public function getContentService()
     {
-        if ( $this->accountService == null) {
-            $this->accountService = \App::make('App\Ecofy\Modules\Account\AccountServiceContract');
+        if ( $this->contentService == null) {
+            //$this->contentService = \App::make('App\Ecofy\Modules\Content\ContentServiceContract');
+            $this->contentService = new ContentService();
         }
-        return $this->accountService;
+        return $this->contentService;
     }
 
-    /**
-     * Returns a new instance of account model
-     */
-    public function newContent($array)
+    public function getActivityService()
     {
-        $model = new Content($array);
-        $model->createdAt = new DateTime();
-
-        return $model;
+        if ( $this->activityService == null) {
+            $this->activityService = new ActivityService();
+        }
+        return $this->activityService;
     }
 
     /**
-     * @overrides  AbstractResourceService::createNewModel()
      * Creates a new model initializing the createdAt property
+     * And generating a new uuid
+     */
     public function createNewModel($data = null, $modelFqn = null)
     {
         $model = parent::createNewModel($data, $modelFqn);
-    }
-    */
-
-    /**
-     * Add
-     * The method calls $this->createNewModel() and saves it.
-     * The derived class can either override the createNewModel()
-     * to modify the behavior of serializing array data into the model.
-     *
-     * @param Object  $resource - The resource (record) to add
-     * @param Object  $options  - Any options for add operation
-     * @return Model  - Upon success, return the added model
-     */
-    public function add($resource, $options = null)
-    {
-        $model = parent::add($resource, $options);
-
-        $this->addChildTo($model->parentUuid, $model);
+        $model->lastInteraction = $model->createdAt;
 
         return $model;
     }
 
+
     /**
-     * updates the record by adding child reference
-     * precondition: the uuid should be of an internal node
+     * Start (create) an assignment.
+     *
+     * @return Assignment
      */
-    public function addChildTo($uuid, $childModel)
+    public function startAssignment($outsetCnodeUUid)
     {
-        $cnode = $this->findByPK($uuid);
-        if ($cnode->type == 'node') {
-            return false;
+        $outsetNode = $this->getContentService()->findByPK($outsetCnodeUUid);
+
+        if (empty($outsetNode))
+        {
+            throw new Exception('Unexisting outsetNode ' . $outsetCnodeUUid);
         }
-        print _r($cnode->content);
-        if ($childModel->parentUuid) {
-            // update child model
-            $childModel->parentUuid = $uuid;
+
+        $assignmentModel = $this->createNewModel();
+        $assignmentModel->outsetCNodeUuid = $outsetNode->uuid;
+
+        $this->getContentService()->add($assignmentModel);
+
+        return $assignmentModel;
+    }
+
+    /**
+     * Create the next activity.
+     * Empty if end of assignment reached.
+     *
+     * @return ActivityDescriptor
+     */
+    public function nextActivity($assignmentUuid)
+    {
+        $nextActivity = null;
+        $assignment = $this->findByPK($assignmentUuid);
+
+        if (empty($assignment->activityTailUuid))
+        {
+            // This is a barnd new assignment, add the next item
+            $citem = $this->getContentService()->getFirstItem($assignment->outsetCNode);
+
+            // Create a new Activity and assignt it as head
+            $contentInstante = $citem->content;
+            if (!empty($content->parent->config))
+            {
+                $beforeInstantiation = $content->parent->config['middleware']['beforeInstantiation'];
+                // @odo - Instantiate the middleware and apply on the content for the instantiateion
+            }
+            $nextActivity = $this->getActivityService()->addActivity($assignment->uuid, $citem->uuid, $contentInstante);
+
+            $assignment->activityHeadUuid = $nextActivity->uuid;
+            $assignment->activityTailUuid = $nextActivity->uuid;
+            $assignment->recentActivityUuid = $nextActivity->uuid;
+            $assignment->status = 1;
+        } else {
+            // Get the activity tail and traverse through the associated content
+            // to obtain the next content item.
+            $activityTail = $this->getActivityService()->findByPK($assignment->activityTailUuid);
+
+            if (!empty($activityTail->content->parentUuid))
+            {
+                $parentContent = $this->getContentService()->findByPK($activityTail->content->parentUuid);
+
+                //$parentContent->content;
+            }
         }
-        return true;
+        return $nextActivity;
     }
 
 }

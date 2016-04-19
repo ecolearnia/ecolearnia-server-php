@@ -34,14 +34,33 @@ class ContentService extends AbstractResourceService
     }
 
     /**
-     * Returns a new instance of account model
+     * Returns the first leaf node
+     * @param Content an internal node
      */
-    public function newContent($array)
+    public function getFirstItem($nodeUuid)
     {
-        $model = new Content($array);
-        $model->createdAt = new DateTime();
+        if (empty($nodeUuid)) {
+            return null;
+        }
 
-        return $model;
+        $currNode = $this->findByPK($nodeUuid);
+
+        while ($currNode->type == 'node') {
+            if (!empty($currNode->content) && is_array($currNode->content)) {
+                $firstChildUuid = $currNode->content[0];
+                $currNode = $this->findByPK($firstChildUuid);
+
+                if(empty($currNode)) {
+                    throw new Exception('CNode [' . $firtChildUuid . '] not found');
+                }
+            }
+        }
+
+
+        if ($currNode->type != 'item') {
+            throw new Exception('First leaf is not an item');
+        }
+        return $currNode;
     }
 
     /**

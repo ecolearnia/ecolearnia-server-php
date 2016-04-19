@@ -1,9 +1,9 @@
 <?php
-namespace App\EcoLearnia\Modules\Content;
+namespace App\EcoLearnia\Modules\Assignment;
 
 use App\Ecofy\Support\ModelBase;
 
-class Content extends ModelBase
+class Activity extends ModelBase
 {
     // model configuration
     protected $primaryKey = 'sid';
@@ -19,7 +19,22 @@ class Content extends ModelBase
     //protected $hidden = [''];
 
     protected $guarded = ['managedBy', 'createdBy', 'createdAt', 'modifiedBy'
-        , 'modifiedAt', 'modifiedCounter'
-        '];
+        , 'modifiedAt', 'modifiedCounter'];
+
+    /**
+     * Get the assignment which this actiivty belongs to
+     */
+    public function assignment()
+    {
+        return $this->belongsTo('App\EcoLearnia\Modules\Assignment\Assignment',  'assignmentUuid',  'uuid');
+    }
+
+    /**
+     * Get the content item which this activity instantates.
+     */
+    public function content()
+    {
+        return $this->belongsTo('App\EcoLearnia\Modules\Content\Content',  'contentUuid',  'uuid');
+    }
 
 }

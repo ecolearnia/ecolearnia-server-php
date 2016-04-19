@@ -35,8 +35,10 @@
     });
 
     $("#btnSave").click(function(event) {
+        var id = $("#id").val();
         var content = $("#content").val();
-        contenResource.save(null, content)
+        var params = {_id: id};
+        contenResource.save(params, content)
         .then(function(data){
             alert(data);
         });

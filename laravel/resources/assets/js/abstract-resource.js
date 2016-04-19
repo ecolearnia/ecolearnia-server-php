@@ -80,13 +80,20 @@ import _ from 'lodash';
 
      /**
       * Saves a resource (POST)
+      * Inserts new (POST) if id was not provided, updates (PUT) otherwise
       * @param
       */
      save(params, data)
      {
-         let opts  = this.buildCallOpts({method:'POST', body: data});
+         var method = 'POST';
+         var id = '';
+         if (params && params._id) {
+             method = 'PUT';
+             id = params._id;
+         }
+         let opts  = this.buildCallOpts({method: method, body: data});
 
-         return fetch(this.baseUrl_, opts)
+         return fetch(this.baseUrl_ + id, opts)
             .then(checkStatus)
             .then(response => response.json());
      }
