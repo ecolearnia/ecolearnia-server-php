@@ -93,26 +93,16 @@ class AssignmentService extends AbstractResourceService
      */
     public function nextActivity($assignmentUuid)
     {
+
+        $itemContent = null;  // The item content that should be used to instantiate the activity
         $nextActivity = null;
         $assignment = $this->findByPK($assignmentUuid);
 
         if (empty($assignment->activityTailUuid))
         {
-            // This is a barnd new assignment, add the next item
-            $citem = $this->getContentService()->getFirstItem($assignment->outsetCNode);
+            // This is a brand new assignment, add the next item
+            $itemContent = $this->getContentService()->getFirstItem($assignment->outsetCNodeUuid);
 
-            // Create a new Activity and assignt it as head
-            $contentInstante = $citem->content;
-            if (!empty($content->parent->config))
-            {
-                $beforeInstantiation = $content->parent->config['middleware']['beforeInstantiation'];
-                // @odo - Instantiate the middleware and apply on the content for the instantiateion
-            }
-            $nextActivity = $this->getActivityService()->addActivity($assignment->uuid, $citem->uuid, $contentInstante);
-
-            $assignment->activityHeadUuid = $nextActivity->uuid;
-            $assignment->activityTailUuid = $nextActivity->uuid;
-            $assignment->recentActivityUuid = $nextActivity->uuid;
             $assignment->status = 1;
         } else {
             // Get the activity tail and traverse through the associated content
@@ -121,12 +111,84 @@ class AssignmentService extends AbstractResourceService
 
             if (!empty($activityTail->content->parentUuid))
             {
-                $parentContent = $this->getContentService()->findByPK($activityTail->content->parentUuid);
-
-                //$parentContent->content;
+                $itemParentConfig = $activityTail->content->parent->config;
+                if (!empty($itemParentConfig)) {
+                    // until limit is reached
+                    $repeatLimit = ObjectAccessor::get($itemParentConfig, 'repeat.limit', 1);
+                    $count = $this->getActivityService()->countByContent($assignment->uuid, $activityTail->content->uuid);
+                    if ($count < $repeatLimit) {
+                        // Hasn't reached the limit, use the same content
+                        $itemContent = $activityTail->content;
+                    }
+                }
+                if (empty($itemContent)) {
+                    $itemContent = $this->getContentService()->getNextItem(
+                        $assignment->outsetCNodeUuid, $activityTail->content->uuid);
+                }
+            } else {
+                throw new Exception("The acitivty's content does not have a parent node");
             }
         }
+
+        if (empty($itemContent)) {
+            // Reach the end of the assignment, no more activity
+            return null;
+        }
+        $contentInstance = $this->instantiateContent($itemContent);
+        $nextActivity = $this->getActivityService()->addActivity(
+                $assignment->uuid, $itemContent->uuid, $contentInstance
+            );
+        if (empty($assignment->activityHeadUuid)){
+            $assignment->activityHeadUuid = $nextActivity->uuid;
+        }
+        $assignment->activityTailUuid = $nextActivity->uuid;
+        $assignment->save();
+
         return $nextActivity;
     }
+
+    /**
+     * @return Content - the instantiated conten
+     */
+    public function instantiateContent($citem)
+    {
+        // Create a new Activity and assignt it as head
+        $contentInstance = $citem->content;
+        if (!empty($content->parent->config))
+        {
+            $beforeInstantiation = $content->parent->config['middleware']['beforeInstantiation'];
+            // @odo - Instantiate the middleware and apply on the content for the instantiateion
+        }
+        return $contentInstance;
+    }
+
+
+    /**
+     * @override
+     * Remove only one record, the first matching one.
+     *
+     * @param Criteria  $criteria - The crediential object
+     * @param object  $options  - Any options for remove operation
+     * @return Model  - Upon success the model returned
+     */
+    public function remove($criteria, $options = null)
+    {
+        $query = $this->buildQuery($criteria);
+        $match = $query->first();
+
+        if (empty($match)) {
+            return 0;
+        }
+
+        // @todo - make it transactional
+        $activityDelCriteria = EcoCriteriaBuilder::equals('assignmentUuid', $match->uuid);
+        $activities = $this->getActivityService()->query($activityDelCriteria);
+        foreach($activities as &$activity)
+        {
+            $activity->delete();
+        }
+        $match->delete();
+    }
+
 
 }

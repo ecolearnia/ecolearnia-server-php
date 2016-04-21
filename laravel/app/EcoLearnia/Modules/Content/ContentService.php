@@ -42,7 +42,6 @@ class ContentService extends AbstractResourceService
         if (empty($nodeUuid)) {
             return null;
         }
-
         $currNode = $this->findByPK($nodeUuid);
 
         while ($currNode->type == 'node') {
@@ -56,12 +55,43 @@ class ContentService extends AbstractResourceService
             }
         }
 
-
         if ($currNode->type != 'item') {
             throw new Exception('First leaf is not an item');
         }
         return $currNode;
     }
+
+
+    /**
+     * Returns the next item starting from $initialItemUuid
+     * @param Content $outsetNodeUuid the node which is the root.
+     *                When the next reaches this node it has reached the end of
+     *                the assignment. (NOT IMPLEMNENTED YET)
+     * @param string $initialItemUuid - the uuid of the item to start from.
+     * @param integer $distance - The distance to move
+     */
+    public function getNextItem($outsetNodeUuid, $initialItemUuid, $distance = 1)
+    {
+        if (empty($initialItemUuid)) {
+            return null;
+        }
+
+        $nextItem = null;
+        $currItem = $this->findByPK($initialItemUuid);
+
+        $index = array_search($initialItemUuid, $currItem->parent->content);
+        if ($index < count($currItem->parent->content) - $distance ) {
+            $nextItemUuid = $currItem->parent->content[$index + $distance];
+            $nextItem = $this->findByPK($nextItemUuid);
+        } else if ($index >= count($currItem->parent->content) - $distance ) {
+            // last element reached.
+            // For the mean time, return null;
+            // @todo - When reached the parent's last child, go one parent up
+            //         and get the first child.
+        }
+        return $nextItem;
+    }
+
 
     /**
      * @override
@@ -108,7 +138,7 @@ class ContentService extends AbstractResourceService
 
     /**
      * @override
-     * Remove only one record
+     * Remove only one record, the first matching one.
      *
      * @param Criteria  $criteria - The crediential object
      * @param object  $options  - Any options for remove operation
@@ -118,10 +148,30 @@ class ContentService extends AbstractResourceService
     {
         $query = $this->buildQuery($criteria);
         $match = $query->first();
-        if (!empty($match)) {
-            $this->removeChildFrom($match->parentUuid, $match);
-            $deletedRows = $match->delete();
+
+        if (empty($match)) {
+            return 0;
         }
+
+        //print('Title: "' . $match->meta_title . '"');
+        //print('Type: "' . $match->type . '"');
+
+        if ($match->type != 'item') {
+            // is an internal node, check weather the body is empty.
+            if (count($match->content) > 0) {
+
+                throw new \Exception('Cannot remove node with children');
+            }
+        }
+
+        // @todo - Make it transactional
+
+        if (!empty($match->parentUuid)) {
+            // Update parent's content that references to this node
+            $this->removeChildFrom($match->parentUuid, $match);
+        }
+        $deletedRows = $match->delete();
+
         return $deletedRows;
     }
 
@@ -160,22 +210,7 @@ class ContentService extends AbstractResourceService
     {
         $parentNode = $this->findByPK($parentUuid);
 
-        if ($parentNode->type != 'node') {
-            return false;
-        }
-        $content = $parentNode->content;
-
-        if (empty($content) || !is_array($content))
-        {
-            $content = [ $childModel->uuid ];
-        } else {
-            if ($index == -1 || count($parentNode->content) < $index) {
-                array_push($content, $childModel->uuid);
-            } else {
-                array_splice($content, $index, 0, $childModel->uuid );
-            }
-        }
-        $parentNode->content = $content;
+        $parentNode->addChildUuid($childModel->uuid, $index);
         $parentNode->save();
 
         if ($childModel->parentUuid) {

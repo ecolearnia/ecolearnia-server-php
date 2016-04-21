@@ -21,8 +21,8 @@
             "middleware": {
                 "beforeInstantiation": "VariableRandomizer"
             },
-            "iteration": {
-                "max": 10
+            "repeat": {
+                "limit": 10
             }
         }
     }

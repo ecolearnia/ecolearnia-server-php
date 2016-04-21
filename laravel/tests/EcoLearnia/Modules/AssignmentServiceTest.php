@@ -85,7 +85,7 @@ class AssignmentServiceTest extends TestCase
         $svc = new AssignmentService();
 
         $contentSvc = new ContentService();
-        $content = ContentServiceTest::addTestContent($contentSvc);
+        $content = ContentServiceTest::addTestContent($contentSvc, 'Test:testStartAssignment', []);
         $assignment = $svc->startAssignment($content->uuid);
 
         $this->assertEquals((string)$content->uuid, $assignment->getAttribute('outsetCNodeUuid'), 'outsetCnodeUUid is dfferent');
@@ -99,25 +99,39 @@ class AssignmentServiceTest extends TestCase
      * A basic functional test example.
      *
      * @return void
+     */
     public function testNextActivity()
     {
         $svc = new AssignmentService();
 
         $contentSvc = new ContentService();
-        $content = ContentServiceTest::addTestContent($contentSvc);
-        $assignment = $svc->startAssignment($content->uuid);
+        $contents = ContentServiceTest::addTestContentTree($contentSvc, 'Assignment');
 
-        $this->assertEquals((string)$content->uuid, $assignment->getAttribute('outsetCNodeUuid'), 'outsetCnodeUUid is dfferent');
+        $assignment = $svc->startAssignment($contents['node1']->uuid);
 
-        $activity = $svc->nextActivity($assignment->uuid);
-        $this->assertTrue(!empty($activity), 'Activity is empty');
+        $this->assertEquals((string)$contents['node1']->uuid, $assignment->outsetCNodeUuid, 'outsetCnodeUUid is dfferent');
 
-        //$this->assertEquals(
+        $nextActivity = $svc->nextActivity($assignment->uuid);
+        $this->assertTrue(!empty($nextActivity), '1: Next activity is empty');
+        $this->assertEquals($contents['item1']->meta_title, $nextActivity->content->meta_title, 'First Next activity has wrong content');
+
+        $nextActivity = $svc->nextActivity($assignment->uuid);
+        $this->assertTrue(!empty($nextActivity), '2: Next activity is empty');
+        $this->assertEquals($contents['item2']->meta_title, $nextActivity->content->meta_title, 'Second Next activity has wrong content');
+
+        $nextActivity = $svc->nextActivity($assignment->uuid);
+        $this->assertTrue(!empty($nextActivity), '3:Next activity is empty');
+        $this->assertEquals($contents['item3']->meta_title, $nextActivity->content->meta_title, 'Third Next activity has wrong content');
+
+        $nextActivity = $svc->nextActivity($assignment->uuid);
+        $this->assertTrue(empty($nextActivity), '1: Next activity is NOT empty');
+
+        // $svc->removeByPK($assignment->uuid);
+        $svc->removeByPK($assignment->uuid);
 
         self::removeTestAssignment($svc, $assignment->uuid);
-        ContentServiceTest::removeTestContent($contentSvc, $content->uuid);
+        ContentServiceTest::removeTestContents($contentSvc, $contents);
     }
-    */
 
 
     // Auxiliary function_exists

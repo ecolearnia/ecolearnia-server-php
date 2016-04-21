@@ -3,6 +3,13 @@ namespace App\Ecofy\Support;
 
 class ObjectAccessor
 {
+    /**
+     * Gets the object's property value using dot notation.
+     * E.g. given object:
+     * $obj = ['foo' => ['bar' => 'mydata']]
+     * ObjectAccessor::get($obj, 'foo.bar')
+     * will return 'mydata'.
+     */
     public static function get($obj, $propertyPath, $default = null)
     {
         return ObjectAccessor::getFromMixed($obj, $propertyPath, $default);

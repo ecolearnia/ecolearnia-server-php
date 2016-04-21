@@ -24,6 +24,31 @@ class Content extends ModelBase
         ];
 
     /**
+     * Add child uuid to the content json
+     * @param string $childUuid the child uuid to add
+     */
+    public function addChildUuid($childUuid, $index = -1)
+    {
+        if ($this->type != 'node') {
+            return false;
+        }
+        $content = $this->content;
+
+        if (empty($content) || !is_array($content))
+        {
+            $content = [ $childUuid ];
+        } else {
+            if ($index == -1 || count($content) < $index) {
+                array_push($content, $childUuid);
+            } else {
+                array_splice($content, $index, 0, $childModel->uuid );
+            }
+        }
+        $this->content = $content;
+        return true;
+    }
+
+    /**
      * Get the content is parent in the graph.
      */
     public function parent()
