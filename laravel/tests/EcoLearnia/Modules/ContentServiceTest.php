@@ -164,9 +164,9 @@ class ContentServiceTest extends TestCase
 
     public static function addTestContent($svc,
         $meta_title = 'TestTitle', $content = ['data' => 'testing'], $parentUuid = null, $type = 'node',
-        $realmUuid = 'TestRealm', $meta_locale = 'EN_us')
+        $config = null, $realmUuid = 'TestRealm', $meta_locale = 'EN_us')
     {
-        $input = self::createContentInput($meta_title, $content, $parentUuid, $type, $realmUuid, $meta_locale);
+        $input = self::createContentInput($meta_title, $content, $parentUuid, $type, $config, $realmUuid, $meta_locale);
         $model = $svc->createNewModel($input);
         $svc->add($model);
         return $model;
@@ -188,6 +188,7 @@ class ContentServiceTest extends TestCase
 
     public static function createContentInput(
         $meta_title, $content, $parentUuid = null, $type = 'item',
+        $config = null,
         $realmUuid = 'TestRealm', $meta_locale = 'EN_us'
         )
     {
@@ -198,7 +199,8 @@ class ContentServiceTest extends TestCase
             'type' => $type,
             'meta_locale' => $meta_locale,
             'meta_title' => $meta_title,
-            'content' => $content
+            'content' => $content,
+            'config' => $config
         ];
         return $input;
     }

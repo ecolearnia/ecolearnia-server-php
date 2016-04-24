@@ -136,7 +136,8 @@ class AssignmentService extends AbstractResourceService
         }
         $contentInstance = $this->instantiateContent($itemContent);
         $nextActivity = $this->getActivityService()->addActivity(
-                $assignment->uuid, $itemContent->uuid, $contentInstance
+                $assignment->uuid, $itemContent->uuid, $contentInstance,
+                $assignment->stats_activitiesCount++
             );
         if (empty($assignment->activityHeadUuid)){
             $assignment->activityHeadUuid = $nextActivity->uuid;

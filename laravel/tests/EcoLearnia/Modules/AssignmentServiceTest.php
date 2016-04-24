@@ -76,7 +76,7 @@ class AssignmentServiceTest extends TestCase
     */
 
     /**
-     * A basic functional test example.
+     * Test testStartAssignment()
      *
      * @return void
      */
@@ -96,7 +96,7 @@ class AssignmentServiceTest extends TestCase
     }
 
     /**
-     * A basic functional test example.
+     * Test nextActivity()
      *
      * @return void
      */
@@ -131,6 +131,42 @@ class AssignmentServiceTest extends TestCase
 
         self::removeTestAssignment($svc, $assignment->uuid);
         ContentServiceTest::removeTestContents($contentSvc, $contents);
+    }
+
+    /**
+     * Tests the nextActivity() where the content node is configured to repeat
+     *
+     * @return void
+     */
+    public function testNextActivityWithRepetition()
+    {
+        $svc = new AssignmentService();
+
+        $contentSvc = new ContentService();
+        $root = ContentServiceTest::addTestContent($contentSvc, 'Test:Root', ['data' => 'testing'], null, 'node');
+        $nodeConfig = ['repeat' => ['limit' => 2 ]];
+        $node1 = ContentServiceTest::addTestContent($contentSvc, 'Test:Level1', ['data' => 'testing'], $root->uuid, 'node', $nodeConfig);
+        $item = ContentServiceTest::addTestContent($contentSvc, 'Test:Item', ['data' => 'testing'], $node1->uuid, 'item');
+
+        $assignment = $svc->startAssignment($node1->uuid);
+        $this->assertEquals((string)$node1->uuid, $assignment->outsetCNodeUuid, 'outsetCnodeUUid is dfferent');
+
+        $nextActivity = $svc->nextActivity($assignment->uuid);
+        $this->assertTrue(!empty($nextActivity), '1: Next activity is empty');
+        $this->assertEquals($item->meta_title, $nextActivity->content->meta_title, 'First Next activity has wrong content');
+
+        $nextActivity = $svc->nextActivity($assignment->uuid);
+        $this->assertTrue(!empty($nextActivity), '2: Next activity is empty');
+        $this->assertEquals($item->meta_title, $nextActivity->content->meta_title, 'First Next activity has wrong content');
+
+        $nextActivity = $svc->nextActivity($assignment->uuid);
+        $this->assertTrue(empty($nextActivity), '3: Next activity is NOT empty');
+
+        self::removeTestAssignment($svc, $assignment->uuid);
+
+        ContentServiceTest::removeTestContent($contentSvc, (string)$item->uuid);
+        ContentServiceTest::removeTestContent($contentSvc, (string)$node1->uuid);
+        ContentServiceTest::removeTestContent($contentSvc, (string)$root->uuid);
     }
 
 

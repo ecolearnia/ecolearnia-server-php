@@ -221,6 +221,7 @@ abstract class AbstractResourceService
 
     /**
      * Update
+     * Only updates those fields provided in $data
      *
      * @param mixed  $pk - The primary key of the resource to find
      * @param array  $data  - The set of fields to update

@@ -14,9 +14,16 @@ npm install whatwg-fetch --save
 
 ## Removing from migration tables#
 php artisan migrate
+
+use test_ecolearnia;
 delete from migrations where migration='2016_04_09_180431_create_activities_table';
 delete from migrations where migration='2016_04_09_132402_create_assignments_table';
 delete from migrations where migration='2016_04_09_124534_create_contents_table';
 drop table activities;
 drop table assignments;
 drop table contents;
+
+
+## Errors troubleshooting ##
+ErrorException: preg_replace(): Parameter mismatch, pattern is a string while replacement is an array
+==> If the field is JSON, make sure that the field name is properly listed in the $private-jsons 

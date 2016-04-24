@@ -110,5 +110,21 @@ class EcofySupportObjectAccessorTest extends TestCase
         $this->assertTrue($result == 'bar');
     }
 
+    public function testSetNested()
+    {
+        $arr = [];
+        ObjectAccessor::set($arr, 'foo.bar', 'data');
+        ObjectAccessor::set($arr, 'foo.bar2', 'data2');
+
+        $expected = [
+            'foo' => [
+                'bar' => 'data',
+                'bar2' => 'data2'
+            ]
+        ];
+
+        $this->assertEquals($expected, $arr, 'Set did not produce expected array');
+    }
+
 
 }

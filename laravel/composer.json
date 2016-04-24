@@ -10,7 +10,8 @@
         "ramsey/uuid": "^3.3",
         "firebase/php-jwt": "^3.0",
         "facebook/php-sdk-v4": "^5.1",
-        "laravel/socialite": "^2.0"
+        "laravel/socialite": "^2.0",
+        "symfony/expression-language": "^3.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

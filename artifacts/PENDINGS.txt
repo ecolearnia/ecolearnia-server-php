@@ -6,9 +6,9 @@ WIP: Relation
 - DB seeding with host root
 - CSFR
 
-- Simple Content module
-    - Model, Service
-    - REST API Controller
-- Sequence module
-    - Model & Service
-    - REST API Controller
+- ActivityService.saveState()
+- ActivityService.evaluate()
+- VariablesRandomizerMiddleware
+- integration with AccountManager
+- Assignable Content query UI
+- report: weekly 

@@ -25,7 +25,7 @@ class CreateActivitiesTable extends Migration
 
             $table->uuid('assignmentUuid')->index(); // The starting point in the content graph
             // The sequence number within the assignment, to allow ordered retrieval of activities
-            $table->integer('sequenceNum')->index(); 
+            $table->integer('sequenceNum')->index();
             $table->uuid('contentUuid')->index(); // The content node
 
             $table->float('correctness')->default(0);
@@ -34,9 +34,9 @@ class CreateActivitiesTable extends Migration
             // @todo - Use json whenever possible
             $table->longText('contentInstance'); // Variables defined
 
-            $table->longText('state')->nullable(); // evaluations
-            $table->longText('timestamps')->nullable(); // timestamps
-            $table->longText('evalDetails')->nullable(); // evalDetails: array or Evals
+            $table->longText('item_state')->nullable(); // state
+            $table->longText('item_timestamps')->nullable(); // timestamps
+            $table->longText('item_evalDetailsList')->nullable(); // evalDetails: array or Evals
 
             $table->foreign('assignmentUuid')->references('uuid')->on('assignments');
             $table->foreign('contentUuid')->references('uuid')->on('contents');

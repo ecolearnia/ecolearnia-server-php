@@ -9,7 +9,7 @@ class Activity extends ModelBase
     protected $primaryKey = 'sid';
     public $timestamps = false;
     protected $dates = ['createdAt', 'modifiedAt'];
-    protected $jsons = ['contentInstance', 'state', 'timestamps', 'evalDetails'];
+    protected $jsons = ['contentInstance', 'item_state', 'item_timestamps', 'item_evalDetailsList'];
 
     /**
      * The attributes excluded from the model's JSON form.

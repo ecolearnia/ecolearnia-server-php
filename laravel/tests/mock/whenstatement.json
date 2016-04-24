@@ -1,0 +1,41 @@
+{
+    "@doc": "Correct answers: 2 and 4",
+    "when": [
+			{
+				"case": "true",
+				"then": {
+					"question1.score": 0,
+					"question2.score": 0
+				}
+			},
+			{
+				"case": "$field1 > 2",
+				"then": {
+					"question1.score": 0,
+					"question1.feedback": "Number too large"
+				}
+			},
+			{
+				"case": "$field1 == $field2",
+				"then": {
+					"question1.score": 0,
+					"question2.score": 0,
+					"question1.feedback": "Fields cannot be same"
+				}
+			},
+			{
+				"case": "$field1 * $field1 == 4",
+				"then": {
+					"question1.score": 1,
+					"question1.feedback": "Correct"
+				}
+			},
+			{
+				"case": "$field2 * $field2 == 16",
+				"then": {
+					"question2.score": 1,
+					"question2.feedback": "Correct"
+				}
+			}
+		]
+}
