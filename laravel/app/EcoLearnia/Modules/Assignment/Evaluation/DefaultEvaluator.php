@@ -4,12 +4,12 @@ namespace App\EcoLearnia\Modules\Assignment\Evaluation;
 use App\Ecofy\Support\ObjectAccessor;
 use App\Ecofy\Support\ObjectHelper;
 
-class DefaultEvaluator
+class DefaultEvaluator implements EvaluatorInterface
 {
     /**
      * Evaluation handlers
      */
-    private handlers = [];
+    private $handlers = [];
 
     public function __construct() {
         $this->registerHandler(new WhenHandler());
@@ -27,45 +27,55 @@ class DefaultEvaluator
 
     /**
      * Evaluate
+     * @param Activity $activity - The activity
+     * @param SubmissionDetails submissionDetails - The student's submission
+     * @return player.EvalResult
      */
     public function evaluate($activity, $submissionDetails)
     {
         $itemVars = ObjectAccessor::get($activity, 'contentInstance.variableDeclarations');
-        $combinedSubmissionData = $this->combineSubmissionData_(itemVars, $submissionDetails['fields']);
+        $combinedSubmissionData = $this->combineSubmissionData($itemVars, $submissionDetails['fields']);
 
-        $attempts = $this->calculateAttempts(nodeDetails);
+        $attempts = $this->calculateAttempts($activity);
         //console.log('** attemptsLeft=' + attempts.attemptsLeft);
-        if (attempts.attemptsLeft == 0)
+        if ($attempts->attemptsLeft == 0)
         {
-            throw new Error('NoMoreAttempts');
+            throw new Exception('NoMoreAttempts');
         }
 
-        $fieldEvals = $this->evaluateFields_($activity->content->responseProcessing, $combinedSubmissionData)
-        $evalResult = new stdClass()
+        $responseProcessing = ObjectAccessor::get($activity, 'contentInstance.responseProcessing');
+        $fieldEvals = $this->evaluateFields($responseProcessing, $combinedSubmissionData);
+        $evalResult = new \stdClass();
         $evalResult->fields = $fieldEvals;
-        $evalResult->attemptNum = $attempts->numAttempted + 1
+        $evalResult->attemptNum = $attempts->numAttempted + 1;
         $evalResult->attemptsLeft = $attempts->attemptsLeft - 1;
-        return $this->calculateAgregate_($evalResult, $evalResult.attemptNum);
+        return $this->calculateAggregate($evalResult, $evalResult->attemptNum);
     }
 
 
     /**
      * Calculates the number of attempts lesft before this submission.
+     * The number of attempts done so far is obtained by counting the number
+     * elements in the array of evaluations.
+     *
+     * @param Activity $activity - The activity.
+     *      Used properties:
+     *        item_evalDetailsList
+     *        contentInstance.defaultPolicy
+     *        policy.maxAttempts
+     * @return object
+     *      object.numAttempted - The number of submissions so far
+     *      object.attemptsLeft - The number of attempts (opportunities) left
      */
     protected function calculateAttempts($activity)
     {
-        $numAttempted = !empty($activity->item_evalDetailsList) ? count($activity->item_evalDetailsList) : 0;
+        $numAttempted = (!empty($activity->item_evalDetailsList)) ? count($activity->item_evalDetailsList) : 0;
         $maxAttempts = 1;
 
-        if (!empty($activity->contentInstance->defaultPolicy)) {
-            $maxAttempts = $activity->content->defaultPolicy->maxAttempts || $maxAttempts;
-        }
+        $maxAttempts = ObjectAccessor::get($activity, 'contentInstance.defaultPolicy', $maxAttempts);
+        $maxAttempts = ObjectAccessor::get($activity, 'policy.maxAttempts', $maxAttempts);
 
-        if (!empty($activity->policy)) {
-            $maxAttempts = $activity->policy->maxAttempts || $maxAttempts;
-        }
-
-        $retval = stdClass();
+        $retval = new \stdClass();
         $retval->numAttempted = $numAttempted;
         $retval->attemptsLeft = $maxAttempts - $numAttempted;
         return $retval;
@@ -78,7 +88,7 @@ class DefaultEvaluator
      * @param {array} $variableDeclarations - The item's variableDeclarations
      * @param {array} $submissionData - the data that the student has submitted
      */
-    protected function combineSubmissionData_($variableDeclarations, $submissionData)
+    protected function combineSubmissionData($variableDeclarations, $submissionData)
     {
         $combinedSubmissionData = [];
 
@@ -88,9 +98,9 @@ class DefaultEvaluator
 
         // Add variables with 'var_' prefix
         $vars = [];
-        foreach($variableDeclarations as $varName)
+        foreach($variableDeclarations as $varName => $varDecl )
         {
-            $vars['var_' + $varName] = $variableDeclarations->{$varName}->value;
+            $vars['var_' . $varName] = ObjectAccessor::get($varDecl, 'value');
         }
         $combinedSubmissionData = array_merge($combinedSubmissionData, $vars);
         return $combinedSubmissionData;
@@ -98,25 +108,31 @@ class DefaultEvaluator
 
     /**
      * Calculate the aggregate score
-     * @param {player.item_evalDetailsList} outcomes
-     * @param {number} attemptNum  - the number of attempt , score diminishing factor
+     * @param {player.evalDetails} $evalResult
+     *          Uses
+     *              $evalResult->fields
+     *          Adds
+     *              $evalResult->aggregate->score
+     *              $evalResult->aggregate->pass
+     * @param {number} $attemptNum  - the number of attempt , score diminishing factor
      */
-    protected function calculateAgregate_(&$evalResult, $attemptNum)
+    protected function calculateAggregate(&$evalResult, $attemptNum)
     {
        // Attempt
        $_attemptNum = $attemptNum || 1;
        // @todo get the passThreshold from config
        $passThreshold = 0.9;
        // Calculate the aggregate score
-       $sum = 0;
+       $sum = 0.0;
        $aggregatePass = true;
        foreach ($evalResult->fields as $fieldName => $fieldResult) {
 
-           if (array_key_exists('score', $fieldResult) {
+           if (array_key_exists('score', $fieldResult)) {
                // Calculate pass/no-pass per field
-               $fieldResult['pass'] = ($fieldResult['score'] > $passThreshold);
+               $pass = ($fieldResult['score'] >= $passThreshold);
+               $evalResult->fields[$fieldName]['pass'] = $pass;
                //console.log('** fieldResult.pass=' + JSON.stringify(fieldResult.pass));
-               if (!$fieldResult['pass']){
+               if (!$pass) {
                    $aggregatePass = false;
                }
                $sum += $fieldResult['score'];
@@ -124,11 +140,11 @@ class DefaultEvaluator
        }
 
        // Round to two decimals
-       $aggregateScore = round($sum / count($evalResult->fields) / $_attemptNum );
+       $aggregateScore = round($sum / count($evalResult->fields) / $_attemptNum, 2 );
 
-       if (!(array_key_exists('aggregate', $evalResult)) {
+       if (!(array_key_exists('aggregate', $evalResult))) {
            if (!property_exists($evalResult, 'aggregate')) {
-               $evalResult->aggregate = new stdClass();
+               $evalResult->aggregate = new \stdClass();
            }
        }
        $evalResult->aggregate->score = $aggregateScore;
@@ -149,23 +165,28 @@ class DefaultEvaluator
     * @return array
     *      array of fields with their respective evaluation result
     */
-   protected function evaluateFields_($rule, $submissionData)
+   protected function evaluateFields($rule, $submissionData)
    {
        //return Promise.reject("Testing static reject");
 
        // @type {Map.<{string} fieldName, {player.FieldEvalResult}>}
-       var $outcomes = [];
+       $outcomes = [];
 
-       foreach ($rule as $statementKey)) {
+       foreach ($rule as $statementKey => $statement) {
            // Currently only 'whenHandler' is supported
-           var $statementHandler = $this->handlers_[statementKey];
+
+           if (!array_key_exists($statementKey, $this->handlers)) {
+               // @todo Log
+               continue;
+           }
+           $statementHandler = $this->handlers[$statementKey];
 
            try {
                // using primivite for construct so it can break
-               if ($statementHandler && $rule[$statementKey]) {
+               if ($statementHandler && $statement) {
                    // Accumulate outcomes.
                    $outcomes = array_merge(
-                       $statementHandler->evaluate($rule[$statementKey], $submissionData));
+                       $statementHandler->evaluate($statement, $submissionData));
                }
            } catch (Exception $error) {
                return $error;
@@ -175,4 +196,24 @@ class DefaultEvaluator
        //console.log('outcomes=' + JSON.stringify(outcomes));
        return $outcomes;
    }
+
+   // exposing private methods for testing purpose
+   public function calculateAttempts_($activity)
+   {
+       return $this->calculateAttempts($activity);
+   }
+   public function combineSubmissionData_($variableDeclarations, $submissionData)
+   {
+       return $this->combineSubmissionData($variableDeclarations, $submissionData);
+   }
+   public function calculateAggregate_(&$evalResult, $attemptNum)
+   {
+       return $this->calculateAggregate($evalResult, $attemptNum);
+   }
+
+   public function evaluateFields_($rule, $submissionData)
+   {
+       return $this->evaluateFields($rule, $submissionData);
+   }
+   //
 }

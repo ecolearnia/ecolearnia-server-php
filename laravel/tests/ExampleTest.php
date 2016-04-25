@@ -19,7 +19,7 @@ class ExampleTest extends TestCase
 
     public function test()
     {
-        print ("----TEST----");
+        //print ("----TEST----");
         $tmp = new stdClass();
         $tmp->foo = 'foo';
         $tmp->bar = new stdClass();
@@ -33,11 +33,11 @@ class ExampleTest extends TestCase
         $a->temp = 'ggg';
         if (property_exists($a, 'temp'))
         {
-            print('property temp exists');
+            //print('property temp exists');
         }
         if (property_exists($a, 'temp2'))
         {
-            print('property temp2 exists');
+            //print('property temp2 exists');
         }
     }
 }

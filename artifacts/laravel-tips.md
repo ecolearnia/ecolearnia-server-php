@@ -26,4 +26,9 @@ drop table contents;
 
 ## Errors troubleshooting ##
 ErrorException: preg_replace(): Parameter mismatch, pattern is a string while replacement is an array
-==> If the field is JSON, make sure that the field name is properly listed in the $private-jsons 
+==> If the field is JSON, make sure that the field name is properly listed in the $private-jsons
+
+
+## PhpUnit ##
+Run single test
+phpunit --filter testEvaluateFieldsCorrect  DefaultEvaluatorTest tests/EcoLearnia/Modules/Assignment/Evaluation/DefaultEvaluatorTest.php
