@@ -13,11 +13,7 @@ use App\Ecofy\Support\ObjectAccessor;
 use App\Ecofy\Support\EcoCriteriaBuilder;
 use App\Ecofy\Support\AbstractResourceService;
 
-// Models
-use App\Ecofy\Modules\Account\Account;
-
-use App\Ecofy\Modules\Activity\ActivityServiceContract;
-
+use App\EcoLearnia\Modules\Assignment\Evaluation\DefaultEvaluator;
 
 class ActivityService extends AbstractResourceService
 {
@@ -96,11 +92,15 @@ class ActivityService extends AbstractResourceService
      */
     public function evaluate($uuid, $submissionDetails)
     {
-        // 1. Retrieve the activity
         $activity = $this->findByPK($uuid);
 
-        $activity->contentInstance;
+        if (empty($activity)) {
+            throw new Exception('Activity Not Found');
+        }
+        $evalutor = new DefaultEvaluator();
+        $evalDatails = $evalutor->evaluate($activity, $submissionDetails);
 
+        return $evalDatails;
     }
 
     /**

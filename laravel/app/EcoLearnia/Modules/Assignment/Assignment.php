@@ -53,4 +53,16 @@ class Assignment extends ModelBase
     {
         return $this->belongsTo('App\EcoLearnia\Modules\Assignment\Activity',  'recentActivityUuid',  'uuid');
     }
+
+    public function getStats()
+    {
+        return [
+            'activitiesCount' => $this->stats_activitiesCount,
+            'timeSpent' => $this->stats_activitiesCount,
+            'corrects' => $this->stats_corrects,
+            'incorrects' => $this->stats_incorrects,
+            'partialcorrects' => $this->stats_partialcorrects,
+            'score' => $this->stats_score
+        ];
+    }
 }

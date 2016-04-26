@@ -6,9 +6,11 @@ WIP: Relation
 - DB seeding with host root
 - CSFR
 
-- ActivityService.saveState()
-- ActivityService.evaluate()
-- VariablesRandomizerMiddleware
+- [OK] ActivityService.saveState()
+- [OK] ActivityService.evaluate()
+- [OK] VariablesRandomizerMiddleware
+- Activity API
+- Client-Server start-next-evaluation integration
 - integration with AccountManager
 - Assignable Content query UI
-- report: weekly 
+- report: weekly

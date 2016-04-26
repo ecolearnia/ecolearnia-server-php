@@ -59,6 +59,12 @@ class AssignmentService extends AbstractResourceService
         $model = parent::createNewModel($data, $modelFqn);
         $model->lastInteraction = $model->createdAt;
 
+        $model->stats_activitiesCount = 0;
+        $model->stats_corrects = 0;
+        $model->stats_incorrects = 0;
+        $model->stats_partialcorrects = 0;
+        $model->stats_score = 0;
+
         return $model;
     }
 
@@ -134,7 +140,7 @@ class AssignmentService extends AbstractResourceService
             // Reach the end of the assignment, no more activity
             return null;
         }
-        $contentInstance = $this->instantiateContent($itemContent);
+        $contentInstance = $this->instantiateContent($assignment, $itemContent);
         $nextActivity = $this->getActivityService()->addActivity(
                 $assignment->uuid, $itemContent->uuid, $contentInstance,
                 $assignment->stats_activitiesCount++
@@ -149,17 +155,32 @@ class AssignmentService extends AbstractResourceService
     }
 
     /**
+     * Instantiates content
+     * @param Assignment $assignment
+     * @param Content $itemContent
      * @return Content - the instantiated conten
      */
-    public function instantiateContent($citem)
+    public function instantiateContent($assignment, $itemContent)
     {
         // Create a new Activity and assignt it as head
-        $contentInstance = $citem->content;
-        if (!empty($content->parent->config))
-        {
-            $beforeInstantiation = $content->parent->config['middleware']['beforeInstantiation'];
-            // @odo - Instantiate the middleware and apply on the content for the instantiateion
+        $contentInstance = $itemContent->content;
+        $beforeInstantiation = ObjectAccessor::get($itemContent->content, 'middleware.beforeInstantiation');
+
+        if (empty($beforeInstantiation) && !empty($itemContent->parent->config)) {
+            $beforeInstantiation = ObjectAccessor::get($itemContent->parent->config, 'middleware.beforeInstantiation');
         }
+
+        if (!empty($beforeInstantiation)) {
+            $className = '\\App\\EcoLearnia\\Modules\\Assignment\\Middleware\\' . $beforeInstantiation->class;
+
+            $middlware = new $className;
+            $params = [
+                'stats' => $assignment->getStats(),
+                'params' => $beforeInstantiation->params
+            ];
+            $contentInstance = $middlware->apply($itemContent->content, $params);
+        }
+
         return $contentInstance;
     }
 

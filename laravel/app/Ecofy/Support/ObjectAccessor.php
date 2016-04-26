@@ -50,6 +50,9 @@ class ObjectAccessor
         return $currNode;
     }
 
+    /**
+     * This only works for arrays
+     */
     public static function set(&$array, $propertyPath, $value)
     {
         if (is_null($propertyPath)) {

@@ -5,6 +5,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 use App\Ecofy\Support\EcoCriteriaBuilder;
+use App\Ecofy\Util\JsonUtil;
 
 use App\EcoLearnia\Modules\Content\ContentService;
 use App\EcoLearnia\Modules\Assignment\AssignmentService;
@@ -167,6 +168,29 @@ class AssignmentServiceTest extends TestCase
         ContentServiceTest::removeTestContent($contentSvc, (string)$item->uuid);
         ContentServiceTest::removeTestContent($contentSvc, (string)$node1->uuid);
         ContentServiceTest::removeTestContent($contentSvc, (string)$root->uuid);
+    }
+
+    /**
+     * Tests the nextActivity() where the content node is configured to repeat
+     *
+     * @return void
+     */
+    public function testInstantiateContent()
+    {
+        $svc = new AssignmentService();
+        $contentSvc = new ContentService();
+
+        $content = JsonUtil::loadFromFile('tests/mock/numbergame.testitem.json');
+
+        $assignment = $svc->createNewModel();
+        $itemContent = $contentSvc->createNewModel();
+        $itemContent->content = $content;
+
+        $result = $svc->instantiateContent($assignment, $itemContent);
+
+        //print_r($itemContent->content->variableDeclarations);
+        //print_r($result->variableDeclarations);
+
     }
 
 

@@ -9,9 +9,7 @@ use Illuminate\Http\Request;
 use App\Ecofy\Support\AbstractResourceApiController;
 
 use App\EcoLearnia\Modules\Content\ContentService;
-use App\EcoLearnia\Modules\Activity\ActivityService;
-
-// Interface
+use App\EcoLearnia\Modules\Assignment\ActivityService;
 use App\EcoLearnia\Modules\Assignment\AssignmentService;
 
 /**
@@ -31,11 +29,19 @@ class AssignmentApiController extends AbstractResourceApiController
 	}
 
 	/**
+	 * @overrides
+	 */
+	public function store(Request $request)
+	{
+		return $this->startAssignment($request);
+	}
+
+	/**
 	 * Start (create) an assignment.
 	 *
 	 * @return Assignment
 	 */
-	public function startAssignment($outsetCnodeUUid, Request $request)
+	public function startAssignment(Request $request)
 	{
 		$assignmentModel = null;
 		$outsetNodeUuid = $request->input('outsetNode');
@@ -61,7 +67,12 @@ class AssignmentApiController extends AbstractResourceApiController
 	 */
 	public function nextActivity($assignmentUuid)
 	{
-		$nextActivity $this->service->nextActivity($assignmentUuid);
+		$nextActivity = null;
+		try {
+			$nextActivity = $this->service->nextActivity($assignmentUuid);
+		} catch (Exception $e) {
+			return $this->jsonResponse(array('error' => $e->getMessage()), 500);
+		}
 
 		return $this->jsonResponse($nextActivity, 201);
 	}

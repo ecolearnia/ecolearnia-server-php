@@ -27,8 +27,6 @@ class WhenHandlerTest extends TestCase
         $filedata = file_get_contents('tests/mock/whenstatement.json');
         $json = json_decode($filedata, true);
 
-        //var_dump($json);
-
         $whenHandler = new WhenHandler();
 
         $submData = [

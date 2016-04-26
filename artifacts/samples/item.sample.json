@@ -151,6 +151,13 @@
                     "timed": 10,
                     "@doc": "If timed is present, following action takes place when time is over",
                     "onTimeOver": "autosubmit"
+                },
+
+                "middleware": {
+                    "beforeInstantiation": {
+                        "class": "VariablesRandomizer",
+                        "params": {}
+                    }
                 }
             }
 

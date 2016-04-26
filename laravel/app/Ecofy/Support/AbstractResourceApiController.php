@@ -20,7 +20,8 @@ abstract class AbstractResourceApiController extends AbstractResourceController
 	}
 
     /**
-	 * Display a listing of the resource.
+	 * Handles GET method without the resource id
+	 * Returns a list of the resource.
 	 *
 	 * @param {Requeest} $request
 	 * @return Response
@@ -61,6 +62,7 @@ abstract class AbstractResourceApiController extends AbstractResourceController
 	}
 
 	/**
+	 * Handles POST method
 	 * Store a newly created resource in storage.
 	 *
 	 * @return Response
@@ -84,6 +86,7 @@ abstract class AbstractResourceApiController extends AbstractResourceController
 	}
 
 	/**
+ 	 * Handles GET method with resource id
 	 * Return JSON representation of the specified resource.
 	 *
 	 * @param  mixed  $id
@@ -114,6 +117,7 @@ abstract class AbstractResourceApiController extends AbstractResourceController
 	}
 
 	/**
+	 * Handles PUT method
 	 * Update the specified resource in storage.
 	 *
 	 * @param  mixed  $id
@@ -138,6 +142,7 @@ abstract class AbstractResourceApiController extends AbstractResourceController
 	}
 
 	/**
+	 * Handles DELETE method
 	 * Remove the specified resource from storage.
 	 *
 	 * @param  int  $id

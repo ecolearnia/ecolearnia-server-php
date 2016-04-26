@@ -204,5 +204,12 @@
             "What multiplied twice gives 4?",
             "Remember that multiplying two negatives yields positive."
         ]
+    },
+
+    "middleware": {
+        "beforeInstantiation": {
+            "class": "VariablesRandomizer",
+            "params": {}
+        }
     }
 }
