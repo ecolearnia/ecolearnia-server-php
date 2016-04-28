@@ -132,7 +132,7 @@ class AssignmentService extends AbstractResourceService
                         $assignment->outsetCNodeUuid, $activityTail->content->uuid);
                 }
             } else {
-                throw new Exception("The acitivty's content does not have a parent node");
+                throw new Exception("The activity's content does not have a parent node");
             }
         }
 
@@ -165,6 +165,10 @@ class AssignmentService extends AbstractResourceService
         // Create a new Activity and assignt it as head
         $contentInstance = $itemContent->content;
         $beforeInstantiation = ObjectAccessor::get($itemContent->content, 'middleware.beforeInstantiation');
+
+        //var_dump($itemContent->content);
+        //var_dump($beforeInstantiation);
+        //die();
 
         if (empty($beforeInstantiation) && !empty($itemContent->parent->config)) {
             $beforeInstantiation = ObjectAccessor::get($itemContent->parent->config, 'middleware.beforeInstantiation');

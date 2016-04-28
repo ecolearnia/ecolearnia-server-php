@@ -51,7 +51,7 @@ class AssignmentApiController extends AbstractResourceApiController
 		}
 
 		try {
-			$assignmentModel = $this->contentService->startAssignment($outsetNodeUuid);
+			$assignmentModel = $this->service->startAssignment($outsetNodeUuid);
 		} catch (Exception $e) {
 			return $this->jsonResponse(array('error' => $e->getMessage()), 500);
 		}

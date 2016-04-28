@@ -71,11 +71,7 @@ import _ from 'lodash';
          if (!params || !params._id) {
              Promise.reject(new Error('_id not provided'));
          }
-         var qstring = this.buildQueryString(params)
-         let opts  = this.buildCallOpts();
-         return fetch(this.baseUrl_ + params._id, opts)
-            .then(checkStatus)
-            .then(response => response.json());
+         return this.doRequest({method: 'GET'}, params._id, params);
      }
 
      /**
@@ -93,9 +89,7 @@ import _ from 'lodash';
          }
          let opts  = this.buildCallOpts({method: method, body: data});
 
-         return fetch(this.baseUrl_ + id, opts)
-            .then(checkStatus)
-            .then(response => response.json());
+         return this.doRequest({method: method, body: data}, id, params);
      }
 
      /**
@@ -104,10 +98,7 @@ import _ from 'lodash';
       */
      query(params)
      {
-         let opts  = this.buildCallOpts();
-         return fetch(this.baseUrl_, opts)
-            .then(checkStatus)
-            .then(response => response.json());
+         return this.doRequest({method: 'GET'}, null, params);
      }
 
      /**
@@ -117,9 +108,7 @@ import _ from 'lodash';
      delete(params)
      {
          let opts  = this.buildCallOpts({method:'DELETE'});
-         return fetch(this.baseUrl_ + params._id, opts)
-            .then(checkStatus)
-            .then(response => response.json());
+         return this.doRequest({method: 'DELETE'}, params._id, params);
      }
 
      /**
@@ -152,12 +141,29 @@ import _ from 'lodash';
 
      buildCallOpts(opts)
      {
+         let optParams = opts || {};
          let optsMerged  = {};
-         _.assign(optsMerged, opts, this.defaultRequestOpts_);
+         _.assign(optsMerged, optParams, this.defaultRequestOpts_);
          return optsMerged;
      }
 
- }
+     /**
+      * Makes an http request
+      * @param {object} opts - the options
+      * @param {!string} path - (optional) path to append to the URL, usually
+      *         the id of the resource
+      * @param {!Object} queryParams - (optional) key-value pairs for query string
+      */
+     doRequest(opts, path, params)
+     {
+         let optParams = this.buildCallOpts(opts);
+         let pathParam = path || '';
+         var qstring = this.buildQueryString(params);
+         return fetch(this.baseUrl_ + pathParam + qstring, optParams)
+            .then(checkStatus)
+            .then(response => response.json());
+     }
+}
 
 function checkStatus(response)
 {

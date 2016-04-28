@@ -48,4 +48,6 @@ Route::resource('api/accounts.relations', '\App\Ecofy\Modules\Relation\Controlle
 Route::resource('api/contents', '\App\EcoLearnia\Modules\Content\Controllers\ContentApiController');
 Route::resource('api/assignments', '\App\EcoLearnia\Modules\Assignment\Controllers\AssignmentApiController');
 
+Route::post('api/assignments/{assignmentUuid}/nextactivity', '\App\EcoLearnia\Modules\Assignment\Controllers\AssignmentApiController@nextActivity');
+
 Route::get('home', 'HomeController@showHome');

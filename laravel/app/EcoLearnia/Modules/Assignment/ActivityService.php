@@ -17,6 +17,8 @@ use App\EcoLearnia\Modules\Assignment\Evaluation\DefaultEvaluator;
 
 class ActivityService extends AbstractResourceService
 {
+    protected $assignmentService = null;
+
     public function __construct() {
 		parent::__construct('\\App\\EcoLearnia\\Modules\\Assignment\\Activity',['assignment', 'content']);
 	}
@@ -26,6 +28,13 @@ class ActivityService extends AbstractResourceService
         return 'ActivityService';
     }
 
+    public function getAssignmentService()
+    {
+        if ( $this->assignmentService == null) {
+            $this->assignmentService = new AssignmentService();
+        }
+        return $this->assignmentService;
+    }
     /**
      * Add an activity to the assignment
      * @param string $assignmentUuid - the assginment's uuid
@@ -100,6 +109,8 @@ class ActivityService extends AbstractResourceService
         $evalutor = new DefaultEvaluator();
         $evalDatails = $evalutor->evaluate($activity, $submissionDetails);
 
+        $this->saveEvaluation($uuid, $evalDatails);
+
         return $evalDatails;
     }
 
@@ -122,6 +133,17 @@ class ActivityService extends AbstractResourceService
         $data['item_state'] = $evalDetails['submission']['fields'];
         $data['item_evalDetailsList'] = $evalDetailsList;
         $data['item_timestamps'] = $timestamps;
+
+
+        // @todo - update assignment's stats:
+        // How to calculate for those activities tha has more than one attempt??
+        // - increment stats_activitiesCount,
+        // - calculate stats_timeSpent
+        // - increment one of stats_corrects, stats_incorrects, stats_partialcorrects
+        // - accumulate stats_score
+        //$evalDatails->aggregate
+        //$this->getAssignmentService()->update($activity->assignmentUuid, )
+
         return $this->update($uuid, $data);
     }
 }

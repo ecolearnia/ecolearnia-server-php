@@ -14,12 +14,12 @@
         "meta_expectedDuration": null,
         "meta_difficulty": null,
         "meta_license": "cc-by-nc-sa\/4.0",
-        "content": {
-            "body": []
-        },
+        "content": []
+        ,
         "config": {
-            "middleware": {
-                "beforeInstantiation": "VariableRandomizer"
+            "beforeInstantiation": {
+                "class": "VariablesRandomizer",
+                "params": {}
             },
             "repeat": {
                 "limit": 10
