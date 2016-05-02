@@ -1,0 +1,44 @@
+
+input.correct {
+        border: 1px solid $success-color;
+    }
+
+input.incorrect {
+        border: 1px solid $alert-color;
+    }
+
+
+span.correct {
+        color: $success-color;
+    }
+
+span.incorrect {
+        color: $alert-color;
+    }
+
+.top-bar.secondary {
+    background-color: $el-theme-secondiary
+}
+
+// This is a card container
+.card-container {
+    background: #fff; // Background color
+    color: #000; // Text color
+    border: 1px solid #000; // Border
+    border-radius: 3px; // Border radius
+    box-shadow: 0 4px 10px black; // Box shadow
+    padding: 1rem;
+    overflow: hidden;
+    margin-bottom: 1rem; // Margin bottom
+}
+
+// This is a card divider
+.card-divider {
+    background: #ccc;
+    padding: 1rem;
+}
+
+// This is a card section
+.card-section {
+    padding: 1rem;
+}

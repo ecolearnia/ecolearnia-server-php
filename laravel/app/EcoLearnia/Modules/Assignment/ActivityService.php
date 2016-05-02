@@ -142,7 +142,7 @@ class ActivityService extends AbstractResourceService
         // - increment one of stats_corrects, stats_incorrects, stats_partialcorrects
         // - accumulate stats_score
         //$evalDatails->aggregate
-        //$this->getAssignmentService()->update($activity->assignmentUuid, )
+        $this->getAssignmentService()->updateEvalBriefs($activity->assignmentUuid, $uuid, $evalDetails);
 
         return $this->update($uuid, $data);
     }

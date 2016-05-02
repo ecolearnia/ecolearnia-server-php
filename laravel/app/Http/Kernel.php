@@ -49,6 +49,9 @@ class Kernel extends HttpKernel
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
 
+        // Cors
+        'cors' => \App\Http\Middleware\Cors::class,
+        
         // Ecofy Auth
         'ecofyauth' => \App\Ecofy\Middleware\Authenticate::class,
     ];

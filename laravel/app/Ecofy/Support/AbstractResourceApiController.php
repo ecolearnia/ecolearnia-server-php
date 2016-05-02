@@ -49,7 +49,7 @@ abstract class AbstractResourceApiController extends AbstractResourceController
 		//var_dump($result);
 		//die();
 
-		return json_encode($result, JSON_PRETTY_PRINT);
+		return $this->jsonResponse($result, 200);
 	}
 
 	/**

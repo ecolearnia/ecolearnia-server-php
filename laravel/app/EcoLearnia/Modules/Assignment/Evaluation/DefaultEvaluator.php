@@ -34,6 +34,10 @@ class DefaultEvaluator implements EvaluatorInterface
     public function evaluate($activity, $submissionDetails)
     {
         $itemVars = ObjectAccessor::get($activity, 'contentInstance.variableDeclarations');
+
+        if (!is_array($submissionDetails)) {
+            $submissionDetails = (array)$submissionDetails;
+        }
         $combinedSubmissionData = $this->combineSubmissionData($itemVars, $submissionDetails['fields']);
 
         $attempts = $this->calculateAttempts($activity);

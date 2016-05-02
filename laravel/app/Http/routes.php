@@ -1,5 +1,7 @@
 <?php
-
+header('Access-Control-Allow-Origin:  *');
+header('Access-Control-Allow-Methods:  POST, GET, OPTIONS, PUT, DELETE');
+header('Access-Control-Allow-Headers:  Content-Type, X-Auth-Token, Origin, Authorization');
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -45,9 +47,13 @@ Route::group(['middleware' => 'ecofyauth'], function () {
 // @todo include as part of protected API
 Route::resource('api/accounts.relations', '\App\Ecofy\Modules\Relation\Controllers\RelationApiController');
 
-Route::resource('api/contents', '\App\EcoLearnia\Modules\Content\Controllers\ContentApiController');
-Route::resource('api/assignments', '\App\EcoLearnia\Modules\Assignment\Controllers\AssignmentApiController');
+//Route::group(['middleware' => 'cors'], function () {
+    Route::resource('api/contents', '\App\EcoLearnia\Modules\Content\Controllers\ContentApiController');
+    Route::resource('api/assignments', '\App\EcoLearnia\Modules\Assignment\Controllers\AssignmentApiController');
 
-Route::post('api/assignments/{assignmentUuid}/nextactivity', '\App\EcoLearnia\Modules\Assignment\Controllers\AssignmentApiController@nextActivity');
-
+    Route::post('api/assignments/{assignmentUuid}/nextactivity', '\App\EcoLearnia\Modules\Assignment\Controllers\AssignmentApiController@nextActivity');
+    Route::resource('api/assignments.activities', '\App\EcoLearnia\Modules\Assignment\Controllers\ActivityApiController');
+    Route::put('api/assignments/{assignmentUuid}/activities/{activityUuid}/state', '\App\EcoLearnia\Modules\Assignment\Controllers\ActivityApiController@saveState');
+    Route::post('api/assignments/{assignmentUuid}/activities/{activityUuid}/eval', '\App\EcoLearnia\Modules\Assignment\Controllers\ActivityApiController@evaluate');
+//});
 Route::get('home', 'HomeController@showHome');

@@ -104,6 +104,11 @@ class AssignmentService extends AbstractResourceService
         $nextActivity = null;
         $assignment = $this->findByPK($assignmentUuid);
 
+        if (empty($assignment)) {
+            throw new Exception("Assignment ID NotFound");
+        }
+
+
         if (empty($assignment->activityTailUuid))
         {
             // This is a brand new assignment, add the next item
@@ -186,6 +191,47 @@ class AssignmentService extends AbstractResourceService
         }
 
         return $contentInstance;
+    }
+
+    /**
+     * Updates the state_itemEvalBriefs fields
+     * @todo - UNIT TEST PENDING
+     *
+     * @param string $assignmentUuid
+     * @param string $activityUuid
+     * @param Object $evalDetails
+     */
+    public function updateEvalBriefs($assignmentUuid, $activityUuid, $evalDetails)
+    {
+        $assignment = $this->findByPK($assignmentUuid);
+        if (empty($assignment->state_itemEvalBriefs)) {
+            $assignment->state_itemEvalBriefs = [];
+        }
+
+        /*
+         * state_itemEvalBriefs {{
+         *      {
+         *            activityId: activityId,
+         *            attemptNum: attemptNum,
+         *            secondsSpent: secondsSpent,
+         *            aggregateResult: aggregateResult
+         *      }
+         * }}
+         *
+         */
+        $length = count($assignment->state_itemEvalBriefs);
+        for($i=0; $i < $length; $i++ ) {
+            $evalBrief = new stdClass();
+            $evalBrief->attemptNum = $evalDetails->evalResult->attemptNum;
+            $evalBrief->secondsSpent = $evalDetails->submission->secondsSpent;
+            $evalBrief->aggregateResult = $evalDetails->evalResult->aggregate;
+            if ($assignment->state_itemEvalBriefs[$i]->activityId == $activityUuid) {
+                $assignment->state_itemEvalBriefs[$i] = $evalBrief;
+            } else {
+                array_push($assignment->state_itemEvalBriefs, $evalBrief);
+            }
+        }
+        $assignment->save();
     }
 
 

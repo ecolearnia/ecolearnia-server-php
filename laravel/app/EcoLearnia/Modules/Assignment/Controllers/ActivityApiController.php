@@ -6,7 +6,7 @@ use DB;
 use Log;
 use Illuminate\Http\Request;
 
-use App\Ecofy\Support\AbstractResourceApiController;
+use App\Ecofy\Support\AbstractNestedResourceApiController;
 
 use App\EcoLearnia\Modules\Content\ContentService;
 use App\EcoLearnia\Modules\Assignment\ActivityService;
@@ -15,7 +15,7 @@ use App\EcoLearnia\Modules\Assignment\AssignmentService;
 /**
  * Assignment Resource API controller
  */
-class ActivityApiController extends AbstractResourceApiController
+class ActivityApiController extends AbstractNestedResourceApiController
 {
 	protected $service = null;
 
@@ -23,7 +23,7 @@ class ActivityApiController extends AbstractResourceApiController
 	protected $assignmentService;
 
 	public function __construct() {
-		parent::__construct(new AssignmentService);
+		parent::__construct(new ActivityService, ['assignmentUuid', 'uuid', 'uuid1', 'uuid2']);
 		$this->contentService = new ContentService();
 		$this->assignmentService = new AssignmentService();
 	}
@@ -57,7 +57,15 @@ class ActivityApiController extends AbstractResourceApiController
 	{
 		$evalDetails = null;
 
-		$submissionDetails = $request->input('submissionDetails');
+		//$submissionDetails = $request->input('submissionDetails');
+		$submissionDetails = $request->json();
+        print_r($submissionDetails);
+
+		$all = $request->all();
+		print_r($all);
+
+		die();
+
 		try {
 			$evalDetails = $this->service->evaluate($activityUuid, $submissionDetails);
 		} catch (Exception $e) {
