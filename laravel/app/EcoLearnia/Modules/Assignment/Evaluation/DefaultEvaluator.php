@@ -33,10 +33,17 @@ class DefaultEvaluator implements EvaluatorInterface
      */
     public function evaluate($activity, $submissionDetails)
     {
-        $itemVars = ObjectAccessor::get($activity, 'contentInstance.variableDeclarations');
+        //$itemVars = ObjectAccessor::get($activity, 'contentInstance.variableDeclarations');
+        $itemVars = null;
+        if ( property_exists($activity->contentInstance, 'variableDeclarations') ){
+            $itemVars = $activity->contentInstance->variableDeclarations;
+        }
 
         if (!is_array($submissionDetails)) {
             $submissionDetails = (array)$submissionDetails;
+        }
+        if (!is_array($itemVars)) {
+            $itemVars = (array)$itemVars;
         }
         $combinedSubmissionData = $this->combineSubmissionData($itemVars, $submissionDetails['fields']);
 
@@ -47,12 +54,19 @@ class DefaultEvaluator implements EvaluatorInterface
             throw new Exception('NoMoreAttempts');
         }
 
-        $responseProcessing = ObjectAccessor::get($activity, 'contentInstance.responseProcessing');
+        //$responseProcessing = ObjectAccessor::get($activity, 'contentInstance.responseProcessing');
+        $responseProcessing = $activity->contentInstance->responseProcessing;
+
+        if (!is_array($responseProcessing)) {
+            $responseProcessing = (array)$responseProcessing;
+        }
         $fieldEvals = $this->evaluateFields($responseProcessing, $combinedSubmissionData);
         $evalResult = new \stdClass();
         $evalResult->fields = $fieldEvals;
         $evalResult->attemptNum = $attempts->numAttempted + 1;
         $evalResult->attemptsLeft = $attempts->attemptsLeft - 1;
+        //print_r($combinedSubmissionData);
+        //die();
         return $this->calculateAggregate($evalResult, $evalResult->attemptNum);
     }
 
@@ -89,7 +103,7 @@ class DefaultEvaluator implements EvaluatorInterface
      * Combine submission data with:
      * 1. variables from the content. This is used for comparison.
      * 2. flattened nested values of itself
-     * @param {array} $variableDeclarations - The item's variableDeclarations
+     * @param {Object} $variableDeclarations - The item's variableDeclarations
      * @param {array} $submissionData - the data that the student has submitted
      */
     protected function combineSubmissionData($variableDeclarations, $submissionData)
@@ -102,9 +116,11 @@ class DefaultEvaluator implements EvaluatorInterface
 
         // Add variables with 'var_' prefix
         $vars = [];
-        foreach($variableDeclarations as $varName => $varDecl )
-        {
-            $vars['var_' . $varName] = ObjectAccessor::get($varDecl, 'value');
+        if (!empty($variableDeclarations)) {
+            foreach($variableDeclarations as $varName => $varDecl )
+            {
+                $vars['var_' . $varName] = ObjectAccessor::get($varDecl, 'value');
+            }
         }
         $combinedSubmissionData = array_merge($combinedSubmissionData, $vars);
         return $combinedSubmissionData;
@@ -112,7 +128,7 @@ class DefaultEvaluator implements EvaluatorInterface
 
     /**
      * Calculate the aggregate score
-     * @param {player.evalDetails} $evalResult
+     * @param {player.EvalDetails} $evalResult
      *          Uses
      *              $evalResult->fields
      *          Adds
@@ -123,7 +139,8 @@ class DefaultEvaluator implements EvaluatorInterface
     protected function calculateAggregate(&$evalResult, $attemptNum)
     {
        // Attempt
-       $_attemptNum = $attemptNum || 1;
+       $_attemptNum = isset($attemptNum) ? $attemptNum : 1;
+
        // @todo get the passThreshold from config
        $passThreshold = 0.9;
        // Calculate the aggregate score
@@ -144,7 +161,10 @@ class DefaultEvaluator implements EvaluatorInterface
        }
 
        // Round to two decimals
+       //print_r($evalResult);
+       //die();
        $aggregateScore = round($sum / count($evalResult->fields) / $_attemptNum, 2 );
+       //print(" ** $aggregateScore " . $sum . ' / ' . count($evalResult->fields) . ' / ' . $_attemptNum);
 
        if (!(array_key_exists('aggregate', $evalResult))) {
            if (!property_exists($evalResult, 'aggregate')) {
@@ -175,6 +195,9 @@ class DefaultEvaluator implements EvaluatorInterface
 
        // @type {Map.<{string} fieldName, {player.FieldEvalResult}>}
        $outcomes = [];
+
+       //print_r($submissionData);
+       //die();
 
        foreach ($rule as $statementKey => $statement) {
            // Currently only 'whenHandler' is supported

@@ -26,7 +26,7 @@ class DefaultEvaluatorEvaluationTest extends TestCase
         $itemContent = $this->loadJson('addition.testitem.json');
 
         $activity = new stdClass();
-        $activity->contentInstance = $itemContent;
+        $activity->contentInstance = (object)$itemContent;
         $activity->item_evalDetailsList = [
             ['submission'=>'MyFakeSubmission', 'evalResult'=>'MyFakeEvalResult']
         ];
@@ -40,6 +40,8 @@ class DefaultEvaluatorEvaluationTest extends TestCase
 
         $result = $defaultEvaluator->evaluate($activity, $submissionDetails);
 
+        //print_r($result);
+
         $expected = new \stdClass();
         $expected->fields = [
             'field1' => [
@@ -51,7 +53,7 @@ class DefaultEvaluatorEvaluationTest extends TestCase
         $expected->attemptNum = 2;
         $expected->attemptsLeft = 0;
         $expected->aggregate = new \stdClass();
-        $expected->aggregate->score = 1.0;
+        $expected->aggregate->score = 0.5; // because this is second attempt
         $expected->aggregate->pass = true;
 
         $this->assertEquals($expected, $result, 'CalculateAttempts returned wrong values');

@@ -86,7 +86,10 @@ class ActivityService extends AbstractResourceService
         // @todo - the structure has to be same as in the interactive's
         // player.ActivityDetails
         $data = array();
-        $data['item_state'] = $state;
+        $data['item_state'] = [
+            '@type' => 'evaluation',
+            'data' => $state
+        ];
         $data['item_timestamps'] = $timestamps;
 
         return $this->update($uuid, $data);
@@ -98,6 +101,7 @@ class ActivityService extends AbstractResourceService
      * @param string $uuid - the activity Uuid
      * @param array $evalDetails - the state of the item uuid
      * @param array $timestamps - (optional) the timestamps
+     * @return EvalResult
      */
     public function evaluate($uuid, $submissionDetails)
     {
@@ -107,30 +111,42 @@ class ActivityService extends AbstractResourceService
             throw new Exception('Activity Not Found');
         }
         $evalutor = new DefaultEvaluator();
-        $evalDatails = $evalutor->evaluate($activity, $submissionDetails);
+        $evalResult = $evalutor->evaluate($activity, $submissionDetails);
 
-        $this->saveEvaluation($uuid, $evalDatails);
+        $this->saveEvaluation($uuid, $evalResult, $submissionDetails);
 
-        return $evalDatails;
+        return $evalResult;
     }
 
     /**
      * Saves the evaluation of a submission
      *
      * @param string $uuid - the activity Uuid
-     * @param array $evalDetails - the state of the item uuid
+     * @param array $evalResult - the evaluation resulted from evalutor->evaluate
      * @param array $timestamps - (optional) the timestamps
      */
-    public function saveEvaluation($uuid, $evalDetails, $timestamps = null)
+    public function saveEvaluation($uuid, $evalResult, $submissionDetails, $timestamps = null)
     {
         $activity = $this->findByPK($uuid);
-        $evalDetailsList = $activity->evalDetails;
+
+        $evalDetails = [
+            'submission' => $submissionDetails,
+            'evalResult' => (array)$evalResult
+        ];
+
+        $evalDetailsList = $activity->item_evalDetailsList;
         if (empty($evalDetailsList)) {
             $evalDetailsList = [];
         }
         array_push($evalDetailsList, $evalDetails);
 
-        $data['item_state'] = $evalDetails['submission']['fields'];
+        //print_r($submissionDetails['fields']);
+        //die();
+
+        $data['item_state'] = [
+            '@type' => 'evaluation',
+            'data' => $submissionDetails
+        ];
         $data['item_evalDetailsList'] = $evalDetailsList;
         $data['item_timestamps'] = $timestamps;
 

@@ -58,13 +58,13 @@ class ActivityApiController extends AbstractNestedResourceApiController
 		$evalDetails = null;
 
 		//$submissionDetails = $request->input('submissionDetails');
+		/*
 		$submissionDetails = $request->json();
         print_r($submissionDetails);
-
-		$all = $request->all();
-		print_r($all);
-
-		die();
+		*/
+		$submissionDetails = $request->all();
+		//print_r($all);
+		//die();
 
 		try {
 			$evalDetails = $this->service->evaluate($activityUuid, $submissionDetails);

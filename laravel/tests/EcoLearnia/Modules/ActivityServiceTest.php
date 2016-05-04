@@ -35,7 +35,7 @@ class ActivityServiceTest extends TestCase
      *
      * @return void
      */
-    public function testAddFindCountModel()
+    public function testSaveStateSaveEvaluation()
     {
         $svc = new ActivityService();
 
@@ -59,32 +59,50 @@ class ActivityServiceTest extends TestCase
             'fields' => [ 'data' => 'mydata']
         ];
         $timestamps = [
-            [ 'startTime' => '2016-04-22T22:44:27+00:00']
+            [ 'startTime' => '2012-01-22T22:44:27+00:00']
         ];
 
         $svc->saveState( (string)$activity->uuid, $state, $timestamps);
         $result = $svc->findByPK($activity->uuid);
 
-        $expectedState = ObjectHelper::createObject($state);
+        $expectedState = ObjectHelper::createObject([
+                '@type' => 'evaluation',
+                'data' => $state
+            ]);
         $this->assertEquals($expectedState, $result->item_state, 'Activity state does not match');
 
         $expectedTimestamps = ObjectHelper::createObject($timestamps);
         $this->assertEquals($expectedTimestamps, $result->item_timestamps, 'Activity timestamps does not match');
 
         // Test saveEvaluation
-        $evalDetails = [
-            'submission' => [
-                'fields' => ['field1' => 'data1']
+        $evalResult = [
+            'attemptNum' => 1,
+            'attemptsLeft' => 1,
+            'fields' => [
+                'field1' => ['pass' => true, 'score' => 0.8]
             ],
-            'evalResult' => ['attemptNum' => 1]
         ];
 
-        $svc->saveEvaluation( (string)$activity->uuid, $evalDetails, $timestamps);
+        $submissionDetails = [
+            'timestamp' => '2012-01-22T22:44:27+00:00',
+            'fields' => [ 'field1' => 'data1' ]
+        ];
+
+        $svc->saveEvaluation( (string)$activity->uuid, $evalResult, $submissionDetails, $timestamps);
         $result = $svc->findByPK($activity->uuid);
-        $expectedState = ObjectHelper::createObject($evalDetails['submission']['fields']);
+        $expectedState = ObjectHelper::createObject([
+                '@type' => 'evaluation',
+                'data' => $submissionDetails
+            ]);
+        //print_r($result->item_evalDetailsList);
         $this->assertEquals($expectedState, $result->item_state, 'Activity state after saveEvaluation does not match');
 
-        $expectedEvalDetailsList = ObjectHelper::createObject([$evalDetails]);
+        $expectedEvalDetailsList = ObjectHelper::createObject([
+            [
+                'submission' => $submissionDetails,
+                'evalResult' => $evalResult
+            ]
+        ]);
         $this->assertEquals($expectedEvalDetailsList, $result->item_evalDetailsList, 'Activity state after saveEvaluation does not match');
 
         // Test countByContent

@@ -142,7 +142,7 @@ class AssignmentService extends AbstractResourceService
         }
 
         if (empty($itemContent)) {
-            // Reach the end of the assignment, no more activity
+            // Reached the end of the assignment, no more activity
             return null;
         }
         $contentInstance = $this->instantiateContent($assignment, $itemContent);
