@@ -44,7 +44,7 @@ class ContentService extends AbstractResourceService
         }
         $currNode = $this->findByPK($nodeUuid);
 
-        while ($currNode->type == 'node') {
+        while ($currNode->type == 'container') {
             if (!empty($currNode->content) && is_array($currNode->content)) {
                 $firstChildUuid = $currNode->content[0];
                 $currNode = $this->findByPK($firstChildUuid);
@@ -231,7 +231,7 @@ class ContentService extends AbstractResourceService
         }
         $parentNode = $this->findByPK($parentUuid);
 
-        if ($parentNode->type != 'node') {
+        if ($parentNode->type != 'container') {
             return false;
         }
         $content = $parentNode->content;

@@ -1,9 +1,8 @@
 <?php
-/*
+// The unit test will fail with errors about hedares, just comment out the followings 3 lins
 header('Access-Control-Allow-Origin:  *');
 header('Access-Control-Allow-Methods:  POST, GET, OPTIONS, PUT, DELETE');
 header('Access-Control-Allow-Headers:  Content-Type, X-Auth-Token, Origin, Authorization');
-*/
 
 /*
 |--------------------------------------------------------------------------
@@ -60,3 +59,5 @@ Route::resource('api/accounts.relations', '\App\Ecofy\Modules\Relation\Controlle
     Route::post('api/assignments/{assignmentUuid}/activities/{activityUuid}/eval', '\App\EcoLearnia\Modules\Assignment\Controllers\ActivityApiController@evaluate');
 //});
 Route::get('home', 'HomeController@showHome');
+Route::get('login', 'HomeController@login');
+Route::get('page/{name}', 'HomeController@page');

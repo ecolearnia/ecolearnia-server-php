@@ -93,8 +93,8 @@ class ContentServiceTest extends TestCase
     public function testGetFirstItem()
     {
         $svc = new ContentService();
-        $rootModel = self::addTestContent($svc, 'Test:Root', ['data' => 'testing'], null, 'node');
-        $l1Model = self::addTestContent($svc, 'Test:Level1', ['data' => 'testing'], $rootModel->uuid, 'node');
+        $rootModel = self::addTestContent($svc, 'Test:Root', ['data' => 'testing'], null, 'container');
+        $l1Model = self::addTestContent($svc, 'Test:Level1', ['data' => 'testing'], $rootModel->uuid, 'container');
         $itemModel = self::addTestContent($svc, 'Test:Item', ['data' => 'testing'], $l1Model->uuid, 'item');
 
         $firstItem = $svc->getFirstItem($rootModel->uuid);
@@ -151,8 +151,8 @@ class ContentServiceTest extends TestCase
      */
     public static function addTestContentTree($svc, $titlePrefix)
     {
-        $root = self::addTestContent($svc, $titlePrefix . 'Test:Root', [], null, 'node');
-        $node1 = self::addTestContent($svc, $titlePrefix . 'Test:Level1', [], $root->uuid, 'node');
+        $root = self::addTestContent($svc, $titlePrefix . 'Test:Root', [], null, 'container');
+        $node1 = self::addTestContent($svc, $titlePrefix . 'Test:Level1', [], $root->uuid, 'container');
         $item1 = self::addTestContent($svc, $titlePrefix . 'Test:Item1', ['data' => 'testing1'], $node1->uuid, 'item');
         $item2 = self::addTestContent($svc, $titlePrefix . 'Test:Item2', ['data' => 'testing2'], $node1->uuid, 'item');
         $item3 = self::addTestContent($svc, $titlePrefix . 'Test:Item3', ['data' => 'testing3'], $node1->uuid, 'item');
@@ -163,7 +163,7 @@ class ContentServiceTest extends TestCase
     }
 
     public static function addTestContent($svc,
-        $meta_title = 'TestTitle', $content = ['data' => 'testing'], $parentUuid = null, $type = 'node',
+        $meta_title = 'TestTitle', $content = ['data' => 'testing'], $parentUuid = null, $type = 'container',
         $config = null, $realmUuid = 'TestRealm', $meta_locale = 'EN_us')
     {
         $input = self::createContentInput($meta_title, $content, $parentUuid, $type, $config, $realmUuid, $meta_locale);

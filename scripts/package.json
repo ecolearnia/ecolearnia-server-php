@@ -1,0 +1,22 @@
+{
+  "name": "ecolearnia-utility-scripts",
+  "version": "0.0.1",
+  "description": "EcoLearnia utility scripts",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ecolearnia",
+    "utility"
+  ],
+  "author": "Young-Suk Ahn Park",
+  "license": "MIT",
+  "dependencies": {
+    "request": "^2.72.0"
+  },
+  "devDependencies": {
+    "commander": "^2.9.0",
+    "glob": "^7.0.3"
+  }
+}

@@ -144,9 +144,9 @@ class AssignmentServiceTest extends TestCase
         $svc = new AssignmentService();
 
         $contentSvc = new ContentService();
-        $root = ContentServiceTest::addTestContent($contentSvc, 'Test:Root', ['data' => 'testing'], null, 'node');
+        $root = ContentServiceTest::addTestContent($contentSvc, 'Test:Root', ['data' => 'testing'], null, 'container');
         $nodeConfig = ['repeat' => ['limit' => 2 ]];
-        $node1 = ContentServiceTest::addTestContent($contentSvc, 'Test:Level1', ['data' => 'testing'], $root->uuid, 'node', $nodeConfig);
+        $node1 = ContentServiceTest::addTestContent($contentSvc, 'Test:Level1', ['data' => 'testing'], $root->uuid, 'container', $nodeConfig);
         $item = ContentServiceTest::addTestContent($contentSvc, 'Test:Item', ['data' => 'testing'], $node1->uuid, 'item');
 
         $assignment = $svc->startAssignment($node1->uuid);

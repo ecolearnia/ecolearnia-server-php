@@ -4103,21 +4103,57 @@ span.incorrect {
 .top-bar.secondary {
   background-color: #ADDFFF; }
 
-.card-container {
-  background: #fff;
-  color: #000;
-  border: 1px solid #000;
-  border-radius: 3px;
-  box-shadow: 0 4px 10px black;
-  padding: 1rem;
+.footer {
+  margin-top: 2rem;
+  background-color: #AEB6BF; }
+
+.site-opening {
+  font-size: 2rem;
+  color: #808000;
+  background-color: #ADDFFF; }
+
+/**
+ * Card from http://zurb.com/building-blocks/material-card
+ */
+.card {
   overflow: hidden;
-  margin-bottom: 1rem; }
-
-.card-divider {
-  background: #ccc;
-  padding: 1rem; }
-
-.card-section {
-  padding: 1rem; }
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+  color: #272727;
+  border-radius: 2px; }
+  .card .title {
+    line-height: 3rem;
+    font-size: 1.5rem;
+    font-weight: 300; }
+  .card .heading {
+    padding: 1.05rem;
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: #fff;
+    background: #2199e8; }
+  .card .content {
+    padding: 1.3rem;
+    font-weight: 300;
+    border-radius: 0 0 2px 2px; }
+  .card p {
+    margin: 0; }
+  .card .action {
+    border-top: 1px solid rgba(160, 160, 160, 0.2);
+    padding: 1.3rem; }
+  .card a {
+    color: #ffab40;
+    margin-right: 1.3rem;
+    transition: color 0.3s ease;
+    text-transform: uppercase;
+    text-decoration: none; }
+  .card .image {
+    position: relative; }
+    .card .image .title {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      padding: 1.3rem;
+      color: #fff; }
+    .card .image img {
+      border-radius: 2px 2px 0 0; }
 
 /*# sourceMappingURL=app.css.map */

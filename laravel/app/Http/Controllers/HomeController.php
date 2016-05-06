@@ -15,4 +15,14 @@ class HomeController extends Controller
     {
         return view('home', ['name' => 'Young']);
     }
+
+    public function login()
+    {
+        return view('login', ['name' => 'Young']);
+    }
+
+    public function page($pageName)
+    {
+        return view($pageName, ['name' => 'Young']);
+    }
 }

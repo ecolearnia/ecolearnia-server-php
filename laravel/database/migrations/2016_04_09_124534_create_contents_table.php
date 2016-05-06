@@ -27,8 +27,10 @@ class CreateContentsTable extends Migration
             $table->uuid('parentUuid')->nullable()->index();
             $table->uuid('copiedFromUuid')->nullable()->index();
 
+            $table->tinyInteger('publishStatus')->index()->default(0); // 0=> in-progress, 1=> review-pending, 9 => ready
             $table->string('version', 64)->nullable();
-            $table->string('type', 12)->index(); // node - internal node, item - content item
+            $table->string('type', 12)->index(); // container - internal node, item - content item
+            $table->boolean('assignable')->index()->default(false); // true -> is listed in the mission catalog
 
             $table->string('meta_subject', 64)->index(); // Eg. Math
             $table->string('meta_subjectArea', 64)->index(); // Eg. Arithmeti
@@ -37,8 +39,7 @@ class CreateContentsTable extends Migration
             $table->string('meta_authors')->nullable();
             $table->string('meta_locale', 12)->index(); // EN_us
             $table->string('meta_title'); //
-            $table->mediumText('meta_description'); //
-            
+            $table->mediumText('meta_description')->nullable(); //
             $table->integer('meta_expectedDuration')->nullable(); // average duration in minutes
             $table->tinyInteger('meta_difficulty')->nullable(); // Difficulty value range [0, 100]
             $table->string('meta_license')->default('cc-by-nc-sa/4.0'); // Creative Commons: http://creativecommons.org/licenses/by-nc-sa/4.0/
@@ -50,7 +51,7 @@ class CreateContentsTable extends Migration
             $table->longText('content');
 
             // Configurtion e.g. The randomizer, number of activities
-            // JSON: process: {beforeInstantiation}, numActivities,   
+            // JSON: process: {beforeInstantiation}, numActivities,
             $table->longText('config')->nullable(); // Policy, etc.
         });
     }

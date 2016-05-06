@@ -29,7 +29,7 @@ class Content extends ModelBase
      */
     public function addChildUuid($childUuid, $index = -1)
     {
-        if ($this->type != 'node') {
+        if ($this->type != 'container') {
             return false;
         }
         $content = $this->content;
