@@ -1,0 +1,31 @@
+    {
+        "uuid": "E18BCC85-C09D-4075-AF9D-80CF6F7DC47D",
+        "realmUuid": "Demo",
+        "parentUuid": null,
+        "copiedFromUuid": null,
+        "publishStatus": 9,
+        "version": "0.9",
+        "type": "container",
+        "assignable": true,
+        "meta_subject": "Math",
+        "meta_subjectArea": "Arithmetic",
+        "meta_domainCodeSource": null,
+        "meta_domainCode": null,
+        "meta_authors": "Young-Suk Ahn",
+        "meta_locale": "EN_us",
+        "meta_title": "Addition under 10",
+        "meta_description": "Addition of one digit numbers from 0 to 9",
+        "meta_expectedDuration": null,
+        "meta_difficulty": null,
+        "meta_license": "cc-by-nc-sa\/4.0",
+        "content": [],
+        "config": {
+            "beforeInstantiation": {
+                "class": "VariablesRandomizer",
+                "params": {}
+            },
+            "repeat": {
+                "limit": 10
+            }
+        }
+    }

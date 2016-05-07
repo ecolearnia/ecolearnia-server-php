@@ -1,0 +1,31 @@
+    {
+        "uuid": "E432B8A2-99C0-48CE-A1BD-950228420323",
+        "realmUuid": "Demo",
+        "parentUuid": null,
+        "copiedFromUuid": null,
+        "publishStatus": 9,
+        "version": "0.9",
+        "type": "container",
+        "assignable": true,
+        "meta_subject": "Math",
+        "meta_subjectArea": "Arithmetic",
+        "meta_domainCodeSource": null,
+        "meta_domainCode": null,
+        "meta_authors": "Young-Suk Ahn",
+        "meta_locale": "EN_us",
+        "meta_title": "Subtraction under 10",
+        "meta_description": "Subtraction of one digit numbers from 0 to 9",
+        "meta_expectedDuration": null,
+        "meta_difficulty": null,
+        "meta_license": "cc-by-nc-sa\/4.0",
+        "content": [],
+        "config": {
+            "beforeInstantiation": {
+                "class": "VariablesRandomizer",
+                "params": {}
+            },
+            "repeat": {
+                "limit": 10
+            }
+        }
+    }

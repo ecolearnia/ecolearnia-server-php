@@ -23,6 +23,9 @@ drop table activities;
 drop table assignments;
 drop table contents;
 
+delete from activities;
+delete from assignments;
+delete from contents;
 
 ## Errors troubleshooting ##
 ErrorException: preg_replace(): Parameter mismatch, pattern is a string while replacement is an array

@@ -1,0 +1,144 @@
+    {
+        "uuid": "C16AF3CE-7AAA-441C-AA24-2F38E769916F",
+        "realmUuid": "Demo",
+        "parentUuid": "9FB97586-3F35-4143-93D8-43AAAD8CAF64",
+        "copiedFromUuid": null,
+        "publishStatus": 9,
+        "version": "0.9",
+        "type": "item",
+        "meta_subject": "Math",
+        "meta_subjectArea": "Arithmetic",
+        "meta_domainCodeSource": null,
+        "meta_domainCode": null,
+        "meta_authors": "Young-Suk Ahn",
+        "meta_locale": "EN_us",
+        "meta_title": "Multiplication under 10",
+        "meta_description": "Multiplication of one digit numbers from 0 to 9",
+        "meta_expectedDuration": null,
+        "meta_difficulty": null,
+        "meta_license": "cc-by-nc-sa\/4.0",
+        "content": {
+            "variableDeclarations": {
+                "num1": {
+                    "baseType": "number",
+                    "value": 5,
+                    "minVal": 0,
+                    "maxVal": 10
+                },
+                "num2": {
+                    "baseType": "number",
+                    "value": 5,
+                    "minVal": 0,
+                    "maxVal": 10
+                }
+            },
+            "@doc": "This section declares participant's input fields (submission)",
+            "responseDeclarations": {
+                "field1": {
+                    "cardinality": "single",
+                    "baseType": "number"
+                }
+            },
+
+            "outcomeDeclarations": {
+                "score": {
+                    "cardinality": "single",
+                    "baseType": "number",
+                    "defaultValue": 0
+                }
+            },
+            "modelDefinition": {
+
+                "question1": {
+                    "prompt": "What is <%=num1%> x <%=num2%>",
+                    "fields": [
+                        {
+                            "responseId": "field1"
+                        }
+                    ]
+                }
+            },
+
+            "responseProcessing": {
+
+                "when": [
+                    {
+                        "@doc": "For the meantime, this is the method for initialization",
+                        "case": "true",
+                        "then": {
+                            "field1.score": 0,
+                            "field1.feedback": "Incorrect"
+                        }
+                    },
+                    {
+                        "case": "$field1_value > $var_num1 * $var_num2",
+                        "then": {
+                            "field1.score": 0,
+                            "field1.feedback": "NUMBER TOO BIG"
+                        }
+                    },
+                    {
+                        "case": "$field1_value < $var_num1 * $var_num2",
+                        "then": {
+                            "field1.score": 0,
+                            "field1.feedback": "NUMBER TOO SMALL"
+                        }
+                    },
+                    {
+                        "case": "$field1_value == $var_num1 * $var_num2",
+                        "then": {
+                            "field1.score": 1,
+                            "field1.feedback": "NUMBER Just right!!"
+                        }
+                    }
+                ]
+            },
+
+            "@doc": "This section is defines the structure of this item.",
+            "body": {
+                "mainComponent": "my_question",
+                "components": {
+                    "@doc": "Each component has two properties, type and config.",
+                    "my_question": {
+                        "type": "TemplateContainer",
+                        "config": {
+                            "template": "<div>{{.component.textfield}}  {{actionbar}}</div>"
+                        }
+                    },
+                    "textfield": {
+                        "type": "TextFieldQuestion",
+                        "config": {
+                            "question": { "_ref" : ".model.question1"},
+                            "layout": "flow"
+                        }
+                    },
+                    "actionbar": {
+                        "type": "ActionBar",
+                        "config": {
+                            "items": [
+                                "submit"
+                            ]
+                        }
+                    },
+                    "feedback": {
+                        "type": "Feedback",
+                        "config": {
+                            "display": "list",
+                            "messageRef": "_aggregate_.feedback"
+                        }
+                    }
+                }
+            },
+
+            "defaultPolicy": {
+                "maxAttempts": 2
+            },
+
+            "middleware": {
+                "beforeInstantiation": {
+                    "class": "VariablesRandomizer",
+                    "params": {}
+                }
+            }
+        }
+    }

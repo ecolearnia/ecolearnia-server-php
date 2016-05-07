@@ -18,6 +18,7 @@ program
     .option('-p, --post', 'Post files')
     .option('-d, --path <path>', 'Directory where the files to put/post are')
     .option('-u, --url <url>', 'URL')
+    .option('-v, --verbose', 'Verbose')
     .parse(process.argv);
 
 /*
@@ -57,21 +58,30 @@ files.forEach(function(filePath, index){
     var jsonContent = readJson(filePath);
 
     //console.log(JSON.stringify(jsonContent, null, 2));
-    httpRequest(program.url, 'POST',
-        jsonContent,
-        null, //{'content-type': 'application/json'},
+    var httpRequestOpts = {
+        url: program.url,
+        method: 'POST',
+        body: jsonContent,
+        headers: null,  //{'content-type': 'application/json'},
+    };
+    httpRequest(httpRequestOpts, program.verbose,
         function(err, httpResponse, body){
             if (err) {
                 console.error('Error on ' + filePath + ': ' + JSON.stringify(err));
+            } else if (httpResponse.statusCode < 400){
+                console.log('Completed ' + filePath + ': ' + JSON.stringify(body, null, 2));
             } else {
-                console.log('Completed ' + filePath + ': ' + body);
+                console.log('Error (status code: '+ httpResponse.statusCode+ ') on ' + filePath + ': ' + JSON.stringify(body, null, 2));
             }
         });
 });
 
 //setInterval(function(){}, 4000);
 
-
+/**
+ * Reads a file and converts it into JSON object
+ * @param {string} filePath
+ */
 function readJson(filePath)
 {
     var content = fs.readFileSync(filePath, 'utf8');
@@ -82,20 +92,32 @@ function readJson(filePath)
     return jsonContent;
 }
 
-function httpRequest(url, method, body, headers, callback)
+/**
+ * Makes an HTTP request call
+ * @param {Object} can contain properties: url, method, body, headers
+ */
+function httpRequest(opts, verbose, callback)
 {
-    method = method || 'GET';
+    method = opts.method || 'GET';
     var options = {
-        url: url,
+        url: opts.url,
         method: method,
-        body: body,
-        headers: headers,
+        body: opts.body,
+        headers: opts.headers,
         json: true
     };
-    console.log(JSON.stringify(options, null, 2));
+    if (verbose) {
+        console.log('Making HTTP Request with ' + JSON.stringify(options, null, 2));
+    }
     return request(options, callback);
 }
 
+/**
+ * Populates the commander with default values if no values were set
+ *
+ * @param {Commander} program - the commander object that has the cli arguments
+ * @param {Object} defaults - the object with the default properties
+ */
 function setCommandDefaults(program, defaults)
 {
     for (var prop in defaults){

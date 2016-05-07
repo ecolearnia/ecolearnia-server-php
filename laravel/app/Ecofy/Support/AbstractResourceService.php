@@ -140,8 +140,7 @@ abstract class AbstractResourceService
         } else {
             throw new Exception('Unsupported argument type passed');
         }
-        //print_r($model);
-        //die();
+        Log::debug('AbstractResourceService::add. input:' . print_r($model, true));
 
         $model->save();
         return $model;

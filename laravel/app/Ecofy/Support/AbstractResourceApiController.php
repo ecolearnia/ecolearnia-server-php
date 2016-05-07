@@ -1,6 +1,7 @@
 <?php
 namespace App\Ecofy\Support;
 
+use Exception;
 use DB;
 use Log;
 use Illuminate\Http\Request;
@@ -70,6 +71,7 @@ abstract class AbstractResourceApiController extends AbstractResourceController
 	public function store(Request $request)
 	{
 		$data = $request->all();
+		Log::debug('AbstractResourceApiController::store. Processing:' . print_r($data, true));
 
 		$createMethod = 'add';
 
@@ -79,7 +81,7 @@ abstract class AbstractResourceApiController extends AbstractResourceController
             $this->afterResourceCreate($resource);
 
 			return $this->jsonResponse(array('added' => $resource->uuid), 201);
-        } catch (Exception $e) {
+		} catch (Exception $e) {
 			// @todo set the status code accordingly
             return $this->jsonResponse(array('error' => $e->getMessage()), 500);
         }
