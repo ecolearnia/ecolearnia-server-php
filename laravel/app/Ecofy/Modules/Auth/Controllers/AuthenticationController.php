@@ -85,7 +85,7 @@ class AuthenticationController extends Controller
         return view('signin');
     }
 
-    public function signin()
+    public function signin(Request $request)
     {
         if ($request->isMethod('get')) {
             return $this->signinForm();

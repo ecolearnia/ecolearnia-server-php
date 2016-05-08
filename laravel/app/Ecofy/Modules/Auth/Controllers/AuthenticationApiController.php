@@ -4,8 +4,7 @@ namespace App\Ecofy\Modules\Auth\Controllers;
 
 use Log;
 use Illuminate\Http\Request;
-
-use App\Http\Controllers\Controller;
+use Illuminate\Routing\Controller;
 
 // Ecofy service
 use App\Ecofy\Support\ObjectAccessor;
@@ -77,8 +76,8 @@ class AuthenticationApiController extends Controller
         $auth = $authService->createAccountAndAuth($models);
         $authAndToken = $authService->login($auth);
 
-        return $this->jsonResponse($authAndToken, 200);
-        //return json_encode($authAndToken);
+        //return $this->jsonResponse($authAndToken, 200);
+        return json_encode($authAndToken);
     }
 
     /**

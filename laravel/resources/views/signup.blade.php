@@ -26,7 +26,7 @@
                 </div>
                 <div class="medium-6 columns">
                     <label>Last Name
-                    <input name="faimlyName" type="text" placeholder="Last Name">
+                    <input name="familyName" type="text" placeholder="Last Name">
                     </label>
                 </div>
             </div>
@@ -135,16 +135,24 @@ $(function() {
 var service = require('service');
 function captureForm() {
     var formData = {};
-    formData.primaryEmails = $('#SignUpForm [name="email"]').val();
+    var emails = [];
+    emails.push($('#SignUpForm [name="email"]').val());
     var dob = {};
     dob.year = $('#SignUpForm [name="dob_year"]').val();
     dob.month = $('#SignUpForm [name="dob_month"]').val();
     dob.day = $('#SignUpForm [name="dob_day"]').val();
     formData.profile = {
+        givenName: $('#SignUpForm [name="givenName"]').val(),
+        familyName: $('#SignUpForm [name="familyName"]').val(),
+        gender: $('#SignUpForm [name="gender"]').val(),
+        emails: emails,
         dob: new Date(dob.year, dob.month, dob.day)
     }
     formData.auth = {
-        username: $('#SignUpForm [name="email"]').val()
+        security: {
+            password: $('#SignUpForm [name="password"]').val()
+        },
+        username: emails[0]
     }
     return formData;
 }
