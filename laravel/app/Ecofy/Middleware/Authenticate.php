@@ -16,7 +16,7 @@ class Authenticate
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle($request, Closure $next, $unauthFlow = 'fail')
     {
         $isAjax = $request->ajax();
         $ecofyToken = $request->cookie('ecofy_token');
@@ -32,11 +32,12 @@ class Authenticate
         $account = null;
         if (!empty($ecofyToken)) {
             $decodedToken = $authService->decodeToken($ecofyToken);
-            $account = $accountService->findByPK($decodedToken->id);
-            if (!empty($account)) {
-                \Auth::login($account);
+            if (!empty($decodedToken)) {
+                $account = $accountService->findByPK($decodedToken->id);
+                if (!empty($account)) {
+                    \Auth::login($account);
+                }
             }
-
 
             /*
             print('---DECODED---');
@@ -46,11 +47,11 @@ class Authenticate
             */
         }
 
-        if (empty($account)) {
+        if (empty($account) && $unauthFlow == 'fail') {
             if ($request->ajax()) {
                 return response('Unauthorized', 401);
             } else {
-                return redirect()->guest('auth/login');
+                return redirect()->guest('auth/signin');
             }
         }
 

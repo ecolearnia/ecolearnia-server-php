@@ -2,6 +2,7 @@
 
 namespace App\EcoLearnia\Modules\Assignment\Controllers;
 
+use Exception;
 use DB;
 use Log;
 use Illuminate\Http\Request;

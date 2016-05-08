@@ -2,6 +2,7 @@
 
 namespace App\EcoLearnia\Modules\Assignment;
 
+use Exception;
 use DateTime;
 use Log;
 use DB;

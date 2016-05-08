@@ -1,0 +1,5 @@
+{
+    "path": "../artifacts/samples/*.item.json",
+    "post": true,
+    "url": "http://localhost:8000/api/contents"
+}

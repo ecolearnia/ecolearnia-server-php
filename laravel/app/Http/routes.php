@@ -24,6 +24,11 @@ Route::group(['middleware' => ['web']], function () {
 });
 
 // Ecofy: Unprotected routes
+
+Route::get('auth/signin', '\App\Ecofy\Modules\Auth\Controllers\AuthenticationController@signin');
+Route::get('auth/signup', '\App\Ecofy\Modules\Auth\Controllers\AuthenticationController@signup');
+Route::get('auth/signout', '\App\Ecofy\Modules\Auth\Controllers\AuthenticationController@signout');
+
 Route::get('auth/google', '\App\Ecofy\Modules\Auth\Controllers\AuthGoogleController@redirectToProvider');
 Route::get('auth/google/callback', '\App\Ecofy\Modules\Auth\Controllers\AuthGoogleController@handleProviderCallback');
 
@@ -44,6 +49,11 @@ Route::group(['middleware' => 'ecofyauth'], function () {
     Route::get('api/myaccount', '\App\Ecofy\Modules\Auth\Controllers\AuthenticationApiController@myaccount');
 
     //Route::post('api/import', 'ImportApiController@process');
+
+    Route::group(['prefix' => 'lms'], function () {
+        // LMS'
+        Route::get('assignment', '\App\EcoLearnia\Lms\Controllers\HomeController@assignment');
+    });
 });
 
 // @todo include as part of protected API
@@ -58,6 +68,10 @@ Route::resource('api/accounts.relations', '\App\Ecofy\Modules\Relation\Controlle
     Route::put('api/assignments/{assignmentUuid}/activities/{activityUuid}/state', '\App\EcoLearnia\Modules\Assignment\Controllers\ActivityApiController@saveState');
     Route::post('api/assignments/{assignmentUuid}/activities/{activityUuid}/eval', '\App\EcoLearnia\Modules\Assignment\Controllers\ActivityApiController@evaluate');
 //});
-Route::get('home', 'HomeController@showHome');
-Route::get('login', 'HomeController@login');
+
+Route::group(['middleware' => 'ecofyauth:cont'], function () {
+    Route::get('portal', '\App\EcoLearnia\Lms\Controllers\HomeController@portal');
+});
+
+// Temp
 Route::get('page/{name}', 'HomeController@page');

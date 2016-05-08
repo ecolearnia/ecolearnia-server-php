@@ -3,6 +3,8 @@
 namespace App\Ecofy\Modules\Auth\Controllers;
 
 use Log;
+use Illuminate\Http\Request;
+
 use App\Http\Controllers\Controller;
 
 // Ecofy service
@@ -12,6 +14,7 @@ use App\Ecofy\Modules\Auth\AuthServiceContract;
 use App\Ecofy\Modules\Auth\Auth;
 use App\Ecofy\Modules\Account\Account;
 use App\Ecofy\Modules\Account\Profile;
+
 
 /**
  * Authentication API controller
@@ -74,7 +77,8 @@ class AuthenticationApiController extends Controller
         $auth = $authService->createAccountAndAuth($models);
         $authAndToken = $authService->login($auth);
 
-        return json_encode($authAndToken);
+        return $this->jsonResponse($authAndToken, 200);
+        //return json_encode($authAndToken);
     }
 
     /**
@@ -92,12 +96,16 @@ class AuthenticationApiController extends Controller
 
         $authAndToken = $authService->authenticate($authCredentials);
 
-        return json_encode($authAndToken);
+        return $this->jsonResponse($authAndToken, 200);
+        //return json_encode($authAndToken);
     }
 
     public function signout(AuthServiceContract $authService)
     {
-        return json_encode(['ok' => true]);
+        // Not much to do as the client-side is responsible of destroying the cookie
+
+        return $this->jsonResponse(['ok' => true], 200);
+        //return json_encode(['ok' => true]);
     }
 
 

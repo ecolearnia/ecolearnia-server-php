@@ -2,6 +2,7 @@
 
 namespace App\EcoLearnia\Modules\Content;
 
+use Exception;
 use DateTime;
 use Log;
 use DB;
@@ -52,6 +53,8 @@ class ContentService extends AbstractResourceService
                 if(empty($currNode)) {
                     throw new Exception('CNode [' . $firtChildUuid . '] not found');
                 }
+            } else {
+                throw new Exception('CNode [' . $currNode->uuid . '] does not have any child');
             }
         }
 
@@ -160,7 +163,7 @@ class ContentService extends AbstractResourceService
             // is an internal node, check weather the body is empty.
             if (count($match->content) > 0) {
 
-                throw new \Exception('Cannot remove node with children');
+                throw new Exception('Cannot remove node with children');
             }
         }
 

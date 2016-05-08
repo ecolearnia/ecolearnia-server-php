@@ -31,24 +31,16 @@
         <!-- Body: content-pane -->
         <div class="row">
             <div class="medium-3 columns">
-
-                <div class="card">
-                    <img src="/images/Avatar_Penguin-512.png" />
-                    <div class="heading">
-                      Jane Doe
-                    </div>
-                    <div class="content">
-                      <p>Score 432</p>
-                    </div>
-                </div>
-
+                @include('_partials.userbadge')
             </div>
             <div class="medium-9 columns">
-                <div>
-                    <select id="nodeSelector"></select>
-                </div>
-                <button id="nextButton" type="button" class="success button" onClick="navigateNext()">Next</button>
-                <div class="eli-assignment-placeholder" id="placeholder-scoreboard" ></div>
+                <!-- Dasboard content -->
+                <!-- UNFINISHED ASSIGNMENTS -->
+                
+
+                <!-- BADGES -->
+
+                <!-- ITEMS -->
             </div>
         </div>
 

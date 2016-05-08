@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class HomeController extends Controller
@@ -21,8 +22,9 @@ class HomeController extends Controller
         return view('login', ['name' => 'Young']);
     }
 
-    public function page($pageName)
+    public function page($pageName, Request $request)
     {
-        return view($pageName, ['name' => 'Young']);
+        $params = $request->all();
+        return view($pageName, ['params' => $params]);
     }
 }

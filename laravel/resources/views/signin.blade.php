@@ -10,13 +10,23 @@
 @section('content')
 <br />
 <div class="row">
-<div class="medium-4 small-centered columns">
-<div class="card">
+<div class="medium-12 columns" >
+<div class="card" style="width:320px; margin: 0 auto;">
     <div class="heading">
         <p>Login</p>
     </div>
     <div class="content">
+        <div style="text-align:center">Using</div>
+        <div>
+            <button class="button" style="background-color: #DC4E41;"
+                onclick="location.href='/auth/google?redir_url=/portal';">Google +</button>
+            <button class="button" style="background-color: #3b5998; color:#fff"
+                onclick="location.href='/auth/facebook?redir_url=/portal';">Facebook</button>
+            <button class="button" style="background-color: #0077b5; color:#fff"
+                onclick="location.href='/auth/linkedin?redir_url=/portal';">LinkedIn</button>
+        </div>
         <form>
+        <div style="text-align:center">Or</div>
             <div class="row">
                 <div class="large-12 columns">
                   <label>Username
@@ -33,9 +43,11 @@
             </div>
       </form>
     </div>
-    <div class="action">
-        <button class="button">Sign In</button>
-        <button class="button">Sign Up</button>
+    <div class="action" style="text-align: center">
+        Forgot Your Password?
+        <button class="button">Sign In</button> &nbsp;
+        <div style="text-align:center">Don't have an account?
+            <a href="/auth/signup">Sign Up</a>, it's free!</div>
     </div>
 </div>
 </div>
