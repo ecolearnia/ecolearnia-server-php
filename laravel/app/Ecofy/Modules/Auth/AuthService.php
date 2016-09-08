@@ -3,6 +3,7 @@
 namespace App\Ecofy\Modules\Auth;
 
 use DateTime;
+use \Exception;
 use Log;
 use DB;
 
@@ -94,7 +95,9 @@ class AuthService extends AbstractResourceService
         // Check if account already exists with same account->primaryEmail
         $matchingAccount = $this->getAccountService()->findByEmail($accountModel->primaryEmail);
         if (!empty($matchingAccount)) {
-            $accountModel = $matchingAccount;
+            //
+            //$accountModel = $matchingAccount;
+            throw new Exception('Account with same email already exists.', 400);
         }
 
         DB::transaction(function () use($accountModel, $profileModel, $authCredential) {

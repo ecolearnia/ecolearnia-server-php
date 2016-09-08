@@ -2,6 +2,7 @@
 
 namespace App\Ecofy\Modules\Auth\Controllers;
 
+use \Exception;
 use Log;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -14,11 +15,14 @@ use App\Ecofy\Modules\Auth\Auth;
 use App\Ecofy\Modules\Account\Account;
 use App\Ecofy\Modules\Account\Profile;
 
+use App\Ecofy\Support\AbstractBaseController;
+
+
 
 /**
  * Authentication API controller
  */
-class AuthenticationApiController extends Controller
+class AuthenticationApiController extends AbstractBaseController
 {
 
     /**
@@ -73,11 +77,15 @@ class AuthenticationApiController extends Controller
         $models['account'] = $accountModel;
         Log::info('Parsed $accountModel:' . print_r($accountModel, true));
 
-        $auth = $authService->createAccountAndAuth($models);
-        $authAndToken = $authService->login($auth);
-
+        try {
+            $auth = $authService->createAccountAndAuth($models);
+            $authAndToken = $authService->login($auth);
+            return $this->jsonResponse($authAndToken, 200);
+        } catch (Exception $e) {
+            return $this->jsonResponse(array('error' => $e->getMessage()), 500);
+        }
         //return $this->jsonResponse($authAndToken, 200);
-        return json_encode($authAndToken);
+        //return json_encode($authAndToken);
     }
 
     /**

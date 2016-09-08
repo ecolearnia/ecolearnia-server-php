@@ -6,11 +6,11 @@ use Log;
 use Illuminate\Http\Request;
 
 use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 use App\Ecofy\Support\SRQLParser;
+use App\Ecofy\Support\AbstractBaseController as BaseController;
 
 abstract class AbstractResourceController extends BaseController
 {

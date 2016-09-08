@@ -110,11 +110,9 @@ class AuthenticationController extends Controller
         ]);
         */
 
-        $returnUrl = $request->input('return_url', '/portal');
-
-        print_r($request->all());
-        print_r($returnUrl);
+        // Not really in use. API is used instead!!
         die();
+        $returnUrl = $request->input('return_url', '/portal');
 
         $models = [];
 
@@ -158,6 +156,11 @@ class AuthenticationController extends Controller
                 , $minutes , $path, $domain, $secure, $httpOnly);
     }
 
+
+    public function subaccountForm()
+    {
+        return view('account.subaccount');
+    }
 
     /**
      * Returns cookie with expirated empty token

@@ -4,7 +4,6 @@ namespace App\Ecofy\Support;
 
 use Log;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
 use Socialite;
 
 use App\Ecofy\Support\ObjectAccessor;
@@ -22,7 +21,7 @@ use App\Ecofy\Modules\Auth\AuthServiceContract;
  * For Socialite documentation
  * @see: https://github.com/laravel/socialite
  */
-abstract class AbstractAuthSocialController extends Controller
+abstract class AbstractAuthSocialController extends AbstractBaseController
 {
     // Socialite's driver name, e.g. google
     protected $driver = null;

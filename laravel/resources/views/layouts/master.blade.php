@@ -51,7 +51,8 @@
                         <div class="dropdown-pane bottom"  id="account-dropdown" data-dropdown data-auto-focus="true">
                             <ul>
                             <li><a href="{{ URL::to('auth/signout') }}">{{ Lang::get('site.logout') }}</a></li>
-                            <li><a href="{{ URL::to('users/' . Auth::user()->sid) }}">Mi Cuenta</a></li>
+                            <li><a href="{{ URL::to('users/' . Auth::user()->sid) }}">My Account</a></li>
+                            <li><a href="{{ URL::to('auth/subaccount') }}">Sub accounts</a></li>
                             </ul>
                         </div>
 

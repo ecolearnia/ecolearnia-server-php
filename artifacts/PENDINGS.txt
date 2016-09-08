@@ -1,16 +1,31 @@
 WIP: Relation
-- N:M Account-to-accont relation (e.g parent, teacher, mentor, etc.)
-- Account Dashboard page: security, personal info, preferences
-- Role & Permission management UI
-- Lookup service (geography: country, province)
-- DB seeding with host root
-- CSFR
+- Image service
+- [account] Handle Forgot password
+- [support] Change all exception to ServiceExeption with code, return json with code
+- [account] N:M Account-to-account relation (e.g parent, teacher, mentor, etc.)
+- [account] Account Dashboard page: security, personal info, preferences
+- [account] Role & Permission management UI
+- [upport] Lookup service (geography: country, province)
+- [util] DB seeding with host root
+- [support] CSFR
 
-- [OK] ActivityService.saveState()
-- [OK] ActivityService.evaluate()
-- [OK] VariablesRandomizerMiddleware
-- Activity API
-- Client-Server start-next-evaluation integration
-- integration with AccountManager
-- Assignable Content query UI
-- report: weekly
+- (OK) ActivityService.saveState()
+- (OK) ActivityService.evaluate()
+- (OK) VariablesRandomizerMiddleware
+- (OK) Client-Server start-next-evaluation integration
+- [Lms] Integration with Account
+- [Lms] Assignable Content query UI
+- [Lms] Page for unfinished assignments
+- [LmS] Reporting: weekly
+- [Lms] Link to report issues in the question
+
+- [Badge] badge
+- [participant profile]
+- [account] profile
+- [content] Add icon field
+- [content] Add links to resources
+
+- [interactive] images feedback
+- [interactive] Arithmetic: horizontal
+- [interactive] Rule arithmetic
+- [interactive] Fact triangle: addition, multiplication

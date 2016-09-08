@@ -31,6 +31,8 @@ delete from contents;
 ErrorException: preg_replace(): Parameter mismatch, pattern is a string while replacement is an array
 ==> If the field is JSON, make sure that the field name is properly listed in the $private-jsons
 
+For javascript's Ajax to work
+php artisan serve --host=127.0.0.1
 
 ## PhpUnit ##
 Run single test
